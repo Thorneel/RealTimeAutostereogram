@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://dmp03r3e0fha3"]
+
+[ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_4jd05"]
+[ext_resource type="PackedScene" uid="uid://bmjtlxk5ehrr4" path="res://Scenes/ScreenProjectionMesh/screen_projection_mesh.tscn" id="2_3uow2"]
+[ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_s5j4t"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_2lxlu"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0asg4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_js6rt"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ljxg5"]
+material = SubResource("StandardMaterial3D_js6rt")
+size = Vector3(0.05, 0.01, 10000)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_4jd05")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_2lxlu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_0asg4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="ScreenProjectionMesh" parent="Camera3D" instance=ExtResource("2_3uow2")]
+
+[node name="ReticleSprite" type="Sprite3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+pixel_size = 0.002
+billboard = 1
+double_sided = false
+no_depth_test = true
+fixed_size = true
+texture = ExtResource("3_s5j4t")
+
+[node name="ShootBeamMesh" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_ljxg5")
