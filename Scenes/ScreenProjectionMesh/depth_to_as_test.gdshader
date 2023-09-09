@@ -78,17 +78,32 @@ float getPixelSeparation(float linear_depth) {
 }
 
 
+float getCentralPixelSeparation(mat4 inv_projection_matrix){
+	float center_linear_depth = getLinearDepth(vec2(0.5), inv_projection_matrix);
+	float center_pixel_separation = getPixelSeparation(center_linear_depth);
+	return center_pixel_separation/2.;
+}
+
+
 vec2 getNoisePixelCoord(vec2 uv_coord, vec2 viewport_size, mat4 inv_projection_matrix){
 	
 	float pixel_repeat = (eye_half_distance_in_pixels * depth_scale * 2.) + 1.;
 	
 	vec2 pix_coord = uv_coord * viewport_size;
+	float x_offset = getCentralPixelSeparation(inv_projection_matrix);
+	
 	vec2 current_pixel = pix_coord;
+	current_pixel.x -= x_offset;
 	
 	// arbitrarily large number, see if a number can be calculated instead?
 	int max_iterations = 128;
 	
 	for (int i = 0; i < max_iterations; i++) {
+		
+		if (current_pixel.x < 0.) {
+			break;
+		}
+		
 		float linear_depth = getLinearDepth(current_pixel / viewport_size, 
 				inv_projection_matrix);
 		float pixel_separation = getPixelSeparation(linear_depth);
@@ -101,11 +116,6 @@ vec2 getNoisePixelCoord(vec2 uv_coord, vec2 viewport_size, mat4 inv_projection_m
 			offset -= pixel_separation;
 		}
 		current_pixel.x -= offset;
-		
-		
-		if (current_pixel.x < 0.) {
-			break;
-		}
 		
 	}
 	
