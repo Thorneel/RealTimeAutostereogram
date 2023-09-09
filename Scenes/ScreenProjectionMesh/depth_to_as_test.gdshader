@@ -78,10 +78,10 @@ float getPixelSeparation(float linear_depth) {
 }
 
 
-float getCentralPixelSeparation(mat4 inv_projection_matrix){
+float getOffsetFromCentralPixel(mat4 inv_projection_matrix){
 	float center_linear_depth = getLinearDepth(vec2(0.5), inv_projection_matrix);
 	float center_pixel_separation = getPixelSeparation(center_linear_depth);
-	return center_pixel_separation/2.;
+	return center_pixel_separation / 2.;
 }
 
 
@@ -90,10 +90,10 @@ vec2 getNoisePixelCoord(vec2 uv_coord, vec2 viewport_size, mat4 inv_projection_m
 	float pixel_repeat = (eye_half_distance_in_pixels * depth_scale * 2.) + 1.;
 	
 	vec2 pix_coord = uv_coord * viewport_size;
-	float x_offset = getCentralPixelSeparation(inv_projection_matrix);
+	float left_offset = getOffsetFromCentralPixel(inv_projection_matrix);
 	
 	vec2 current_pixel = pix_coord;
-	current_pixel.x -= x_offset;
+	current_pixel.x -= left_offset;
 	
 	// arbitrarily large number, see if a number can be calculated instead?
 	int max_iterations = 128;
@@ -125,7 +125,7 @@ vec2 getNoisePixelCoord(vec2 uv_coord, vec2 viewport_size, mat4 inv_projection_m
 }
 
 
-vec3 add_color_in_front_of_color(vec3 background_color, vec4 front_color){
+vec3 addColorInFrontOfColor(vec3 background_color, vec4 front_color){
 	vec3 result_color = (
 			background_color * (1. - front_color.a)
 		) + (front_color.rgb * front_color.a);
@@ -133,84 +133,47 @@ vec3 add_color_in_front_of_color(vec3 background_color, vec4 front_color){
 }
 
 
-ModifiedColor addReticleIfNeeded(vec3 initial_color, vec2 uv_coord, vec2 offset_from_center_coord,
+vec3 addSingleReticle(vec3 initial_color, vec2 uv_coord, float x_offset, vec2 viewport_size,
 		mat4 inv_projection_matrix){
 	
 	vec2 reticle_res = vec2(textureSize(reticle_img, 0));
 	vec2 half_reticle_res = reticle_res * 0.5;
-	
-	
-	float linear_depth = getLinearDepth(uv_coord, inv_projection_matrix);
-	float half_pixel_separation = getPixelSeparation(linear_depth) * 0.5;
-	if (
-		(offset_from_center_coord.x + half_reticle_res.x > half_pixel_separation)
-		&& (offset_from_center_coord.x - half_reticle_res.x < half_pixel_separation)
-	){
-		vec2 reticle_coord = 
-				offset_from_center_coord 
-				- half_reticle_res 
-				- vec2(half_pixel_separation, 0.);
-		vec2 reticle_uv = reticle_coord / reticle_res;
-		vec4 reticle_color = textureLod(reticle_img, reticle_uv, 0.0);
-		vec3 color_result = add_color_in_front_of_color(initial_color, reticle_color);
-		
-		
-		return ModifiedColor(true, color_result);
-	}
-	
-	return ModifiedColor(false, initial_color);
-}
-
-
-vec3 addReticleToColor(vec3 initial_color, vec2 uv_coord, vec2 viewport_size, 
-		mat4 inv_projection_matrix){
-	
-	vec2 pix_coord = uv_coord * viewport_size;
-	vec2 reticle_res = vec2(textureSize(reticle_img, 0));
-	vec2 half_reticle_res = reticle_res * 0.5;
-	
 	vec2 offset_from_center_coord = (uv_coord - 0.5) * viewport_size;
-	float half_max_pixel_separation = eye_half_distance_in_pixels;
 	
 	// if we are above or under reticle height, 
-	// or if we are beyond max distance from center, 
 	// the reticle cannot be there and we return the initial color instead
-	if (
-		(abs(offset_from_center_coord.y) > half_reticle_res.y)
-		|| (abs(offset_from_center_coord.x) - half_reticle_res.x > half_max_pixel_separation)
-	){
+	if ((abs(offset_from_center_coord.y) > half_reticle_res.y)){
 //		return vec3(1.0);
 		return initial_color;
 	}
 	
+	vec3 color_result = initial_color;
 	
-	// RIGHT RETICLE
 	
-	ModifiedColor right_reticle_color = addReticleIfNeeded(initial_color, uv_coord, 
-			offset_from_center_coord, inv_projection_matrix);
-	if (right_reticle_color.is_modified) {
-		return right_reticle_color.color;
+	if (abs(offset_from_center_coord.x + x_offset) < half_reticle_res.x){
+		vec2 reticle_coord = offset_from_center_coord + vec2(x_offset, 0.) - half_reticle_res;
+		vec2 reticle_uv = reticle_coord / reticle_res;
+		vec4 reticle_color = textureLod(reticle_img, reticle_uv, 0.0);
+		color_result = addColorInFrontOfColor(initial_color, reticle_color);
 	}
 	
-	if (offset_from_center_coord.x > 0.) {
-		return initial_color;
-	}
+	return color_result;
+}
+
+
+vec3 addReticles(vec3 initial_color, vec2 uv_coord, vec2 viewport_size, 
+		mat4 inv_projection_matrix) {
 	
+	vec2 pix_coord = uv_coord * viewport_size;
+	float left_offset = getOffsetFromCentralPixel(inv_projection_matrix);
 	
-	// LEFT RETICLE
+	vec3 color_result = initial_color;
+	// Right reticle
+	color_result = addSingleReticle(color_result, uv_coord, left_offset, viewport_size, inv_projection_matrix);
+	// Left reticle
+	color_result = addSingleReticle(color_result, uv_coord, -left_offset, viewport_size, inv_projection_matrix);
 	
-	float offset_uv_x = -offset_from_center_coord.x / viewport_size.x;
-	vec2 mirror_uv = uv_coord + vec2(offset_uv_x, 0.);
-	vec2 mirror_offset = offset_from_center_coord * vec2(-1., 1.);
-	float mirror_linear_depth = getLinearDepth(uv_coord, inv_projection_matrix);
-	float mirror_half_pixel_separation = getPixelSeparation(mirror_linear_depth) * 0.5;
-	ModifiedColor left_reticle_color = addReticleIfNeeded(initial_color, mirror_uv, 
-			mirror_offset, inv_projection_matrix);
-	if (left_reticle_color.is_modified) {
-		return left_reticle_color.color;
-	}
-	
-	return initial_color;
+	return color_result;
 }
 
 
@@ -266,7 +229,7 @@ void fragment() {
 		color_result = ((color_result * 0.9) + (screen * 0.1));
 	}
 	
-	color_result = addReticleToColor(color_result, SCREEN_UV, VIEWPORT_SIZE, 
+	color_result = addReticles(color_result, SCREEN_UV, VIEWPORT_SIZE, 
 			INV_PROJECTION_MATRIX);
 	
 	ALBEDO = color_result;
