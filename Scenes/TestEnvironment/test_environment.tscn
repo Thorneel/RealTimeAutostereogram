@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://bqq4rpleyxb6l"]
+[gd_scene load_steps=23 format=3 uid="uid://bqq4rpleyxb6l"]
 
 [ext_resource type="Script" path="res://Scenes/TestEnvironment/test_environment.gd" id="1_jwqji"]
 [ext_resource type="PackedScene" uid="uid://dmp03r3e0fha3" path="res://Scenes/Player/player.tscn" id="1_tss0b"]
+[ext_resource type="PackedScene" uid="uid://b27edeau1d236" path="res://Scenes/BoxTerrainBlock/box_terrain_block.tscn" id="2_jgjud"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lfk46"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,46 +18,47 @@ ambient_light_source = 3
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_fk0so"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7tndr"]
+resource_local_to_scene = true
+albedo_color = Color(0.596078, 0.658824, 0.796078, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7ir3i"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_7tndr")
 size = Vector3(100, 1, 100)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wpw1c"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w468y"]
+resource_local_to_scene = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_86cvj"]
-size = Vector3(100, 1, 100)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ni7s"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_msnbr"]
-material = SubResource("StandardMaterial3D_1ni7s")
+[sub_resource type="BoxMesh" id="BoxMesh_6021u"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_w468y")
 size = Vector3(30, 10, 1)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_sf8ll"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jn71c"]
+resource_local_to_scene = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_5hoc8"]
-size = Vector3(30, 10, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_da0rt"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_tm7n3"]
-material = SubResource("StandardMaterial3D_da0rt")
+[sub_resource type="BoxMesh" id="BoxMesh_f7g0p"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_jn71c")
 size = Vector3(4, 2.5, 4)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k727v"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_a5m16"]
-size = Vector3(4, 2.5, 4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4cpo"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7o7yu"]
+resource_local_to_scene = true
 albedo_color = Color(0.643137, 0.643137, 0.643137, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_f4s1w"]
-material = SubResource("StandardMaterial3D_g4cpo")
+[sub_resource type="BoxMesh" id="BoxMesh_qe2ks"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_7o7yu")
 size = Vector3(4, 0.5, 4)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_h2bik"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ja510"]
+resource_local_to_scene = true
+albedo_color = Color(0.643137, 0.643137, 0.643137, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_gvigc"]
+[sub_resource type="BoxMesh" id="BoxMesh_bd7tw"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_ja510")
 size = Vector3(4, 0.5, 4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t57nj"]
@@ -71,13 +73,13 @@ size = Vector3(4, 2, 2)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_oxt25"]
 points = PackedVector3Array(-2, -1, -1, -2, -1, 1, -2, 1, -1, -2, 1, 1, 2, -1, -1, 2, -1, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wvmke"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7qjka"]
+resource_local_to_scene = true
+albedo_color = Color(0.643137, 0.643137, 0.643137, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_1pyri"]
-material = SubResource("StandardMaterial3D_wvmke")
-size = Vector3(2, 0.2, 4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_splw3"]
+[sub_resource type="BoxMesh" id="BoxMesh_7qmq2"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_7qjka")
 size = Vector3(2, 0.2, 4)
 
 [node name="TestEnvironment" type="Node3D"]
@@ -92,59 +94,28 @@ shadow_enabled = true
 
 [node name="WorldMeshes" type="Node" parent="."]
 
-[node name="GroundMesh" type="MeshInstance3D" parent="WorldMeshes"]
-mesh = SubResource("BoxMesh_fk0so")
-skeleton = NodePath("../..")
+[node name="GroundBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
+mesh = SubResource("BoxMesh_7ir3i")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="WorldMeshes/GroundMesh"]
-physics_material_override = SubResource("PhysicsMaterial_wpw1c")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/GroundMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_86cvj")
-
-[node name="WallMesh" type="MeshInstance3D" parent="WorldMeshes"]
+[node name="WallBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -15)
-mesh = SubResource("BoxMesh_msnbr")
+mesh = SubResource("BoxMesh_6021u")
 skeleton = NodePath("../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="WorldMeshes/WallMesh"]
-physics_material_override = SubResource("PhysicsMaterial_sf8ll")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/WallMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_5hoc8")
-
-[node name="LowPlatformMesh" type="MeshInstance3D" parent="WorldMeshes"]
+[node name="LowPlatformBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
-mesh = SubResource("BoxMesh_tm7n3")
-skeleton = NodePath("../..")
+mesh = SubResource("BoxMesh_f7g0p")
+skeleton = NodePath("../WallBlock")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="WorldMeshes/LowPlatformMesh"]
-physics_material_override = SubResource("PhysicsMaterial_k727v")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/LowPlatformMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_a5m16")
-
-[node name="MedPlatformMesh" type="MeshInstance3D" parent="WorldMeshes"]
+[node name="MedPlatformBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.9, 4.5)
-mesh = SubResource("BoxMesh_f4s1w")
-skeleton = NodePath("../..")
+mesh = SubResource("BoxMesh_qe2ks")
+skeleton = NodePath("")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="WorldMeshes/MedPlatformMesh"]
-physics_material_override = SubResource("PhysicsMaterial_h2bik")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/MedPlatformMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_gvigc")
-
-[node name="HighPlatformMesh" type="MeshInstance3D" parent="WorldMeshes"]
+[node name="HighPlatformBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.8, 9)
-mesh = SubResource("BoxMesh_f4s1w")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="WorldMeshes/HighPlatformMesh"]
-physics_material_override = SubResource("PhysicsMaterial_h2bik")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/HighPlatformMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_gvigc")
+mesh = SubResource("BoxMesh_bd7tw")
+skeleton = NodePath("")
 
 [node name="RampMesh" type="MeshInstance3D" parent="WorldMeshes"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1, 10)
@@ -157,15 +128,10 @@ physics_material_override = SubResource("PhysicsMaterial_w07vq")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/RampMesh/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_oxt25")
 
-[node name="PlatformRampMesh" type="MeshInstance3D" parent="WorldMeshes"]
+[node name="PlatformRampBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 16)
-mesh = SubResource("BoxMesh_1pyri")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="WorldMeshes/PlatformRampMesh"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldMeshes/PlatformRampMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_splw3")
+mesh = SubResource("BoxMesh_7qmq2")
+skeleton = NodePath("")
 
 [node name="Player" parent="." instance=ExtResource("1_tss0b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
