@@ -41,7 +41,16 @@ func _unhandled_input(event):
 		proj_mesh.toggle_screen()
 	
 	if Input.is_action_just_pressed("shoot"):
-		shoot_beam_mesh.visible = !shoot_beam_mesh.visible;
+		start_shooting()
+	
+	if Input.is_action_just_released("shoot"):
+		stop_shooting()
+	
+	if Input.is_action_just_pressed("laser"):
+		toggle_laser()
+	
+	if Input.is_action_just_pressed("use"):
+		use()
 
 
 func _physics_process(delta):
@@ -65,3 +74,19 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+
+func start_shooting():
+	pass
+
+
+func stop_shooting():
+	pass
+
+
+func toggle_laser():
+	shoot_beam_mesh.visible = !shoot_beam_mesh.visible;
+
+
+func use():
+	pass
