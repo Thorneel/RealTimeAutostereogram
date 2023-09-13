@@ -22,15 +22,15 @@ glow_enabled = true
 resource_local_to_scene = true
 albedo_color = Color(0.596078, 0.658824, 0.796078, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_7ir3i"]
+[sub_resource type="BoxMesh" id="BoxMesh_t5k1h"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_7tndr")
-size = Vector3(100, 1, 100)
+size = Vector3(100, 20, 100)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w468y"]
 resource_local_to_scene = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_6021u"]
+[sub_resource type="BoxMesh" id="BoxMesh_5n5va"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_w468y")
 size = Vector3(30, 10, 1)
@@ -38,7 +38,7 @@ size = Vector3(30, 10, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jn71c"]
 resource_local_to_scene = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_f7g0p"]
+[sub_resource type="BoxMesh" id="BoxMesh_e68my"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_jn71c")
 size = Vector3(4, 2.5, 4)
@@ -47,7 +47,7 @@ size = Vector3(4, 2.5, 4)
 resource_local_to_scene = true
 albedo_color = Color(0.643137, 0.643137, 0.643137, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_qe2ks"]
+[sub_resource type="BoxMesh" id="BoxMesh_y3s1e"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_7o7yu")
 size = Vector3(4, 0.5, 4)
@@ -56,7 +56,7 @@ size = Vector3(4, 0.5, 4)
 resource_local_to_scene = true
 albedo_color = Color(0.643137, 0.643137, 0.643137, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_bd7tw"]
+[sub_resource type="BoxMesh" id="BoxMesh_wolbp"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_ja510")
 size = Vector3(4, 0.5, 4)
@@ -77,7 +77,7 @@ points = PackedVector3Array(-2, -1, -1, -2, -1, 1, -2, 1, -1, -2, 1, 1, 2, -1, -
 resource_local_to_scene = true
 albedo_color = Color(0.643137, 0.643137, 0.643137, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_7qmq2"]
+[sub_resource type="BoxMesh" id="BoxMesh_vhruh"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_7qjka")
 size = Vector3(2, 0.2, 4)
@@ -95,26 +95,27 @@ shadow_enabled = true
 [node name="WorldMeshes" type="Node" parent="."]
 
 [node name="GroundBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
-mesh = SubResource("BoxMesh_7ir3i")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+mesh = SubResource("BoxMesh_t5k1h")
 
 [node name="WallBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -15)
-mesh = SubResource("BoxMesh_6021u")
+mesh = SubResource("BoxMesh_5n5va")
 skeleton = NodePath("../..")
 
 [node name="LowPlatformBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
-mesh = SubResource("BoxMesh_f7g0p")
+mesh = SubResource("BoxMesh_e68my")
 skeleton = NodePath("../WallBlock")
 
 [node name="MedPlatformBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.9, 4.5)
-mesh = SubResource("BoxMesh_qe2ks")
+mesh = SubResource("BoxMesh_y3s1e")
 skeleton = NodePath("")
 
 [node name="HighPlatformBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.8, 9)
-mesh = SubResource("BoxMesh_bd7tw")
+mesh = SubResource("BoxMesh_wolbp")
 skeleton = NodePath("")
 
 [node name="RampMesh" type="MeshInstance3D" parent="WorldMeshes"]
@@ -130,7 +131,7 @@ shape = SubResource("ConvexPolygonShape3D_oxt25")
 
 [node name="PlatformRampBlock" parent="WorldMeshes" instance=ExtResource("2_jgjud")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 16)
-mesh = SubResource("BoxMesh_7qmq2")
+mesh = SubResource("BoxMesh_vhruh")
 skeleton = NodePath("")
 
 [node name="Player" parent="." instance=ExtResource("1_tss0b")]

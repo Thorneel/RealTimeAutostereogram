@@ -4,20 +4,36 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
+const MIN_THROW_FORCE = 10.
+const MAX_THROW_FORCE = 100.
+const THROW_FORCE_INCREASE_FACTOR = 20.
+
+
 @onready var camera = $Camera3D
 ## The mesh on which the autostereogram is projected
 @onready var proj_mesh:MeshInstance3D = $Camera3D/ScreenProjectionMesh
 @onready var shoot_beam_mesh:MeshInstance3D = $Camera3D/ShootBeamMesh
 
+var ball_scene = preload("res://Scenes/Ball/ball.tscn")
+@onready var ball:RigidBody3D = $Camera3D/Weapon/Ball
+@onready var ball_anim_player:AnimationPlayer = $Camera3D/Weapon/BallAnimationPlayer
+
+@onready var launch_point:Node3D = $Camera3D/launch_point
+
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var is_mouse_captured:bool
+var is_shooting:bool = false
+var throw_force = MIN_THROW_FORCE
+
 
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	is_mouse_captured = true
+	ball.toggle_physics()
 
 
 func _unhandled_input(event):
@@ -72,16 +88,46 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	
+	if (is_shooting):
+		throw_force += delta * THROW_FORCE_INCREASE_FACTOR
+	else:
+		if input_dir != Vector2.ZERO and is_on_floor():
+			ball_anim_player.play("move")
+		else:
+			ball_anim_player.play("RESET")
+	
 	move_and_slide()
+	
+#	# TODO remove after testing
+#	if (is_shooting):
+#		launch_ball()
 
 
 func start_shooting():
-	pass
+	# FIXME why doesn't the second anim play
+#	ball_anim_player.play("prepare_throw")
+#	ball_anim_player.queue("hold_throw")
+	ball_anim_player.play("hold_throw")
+	throw_force = MIN_THROW_FORCE
+	is_shooting = true
 
 
 func stop_shooting():
-	pass
+	launch_ball()
+	is_shooting = false
+
+
+func launch_ball():
+	ball_anim_player.play("after_throwing")
+	var new_ball:ThrowingBall = ball_scene.instantiate()
+	get_parent().add_child(new_ball)
+#	new_ball.global_position = launch_point.global_position
+	new_ball.global_transform = launch_point.global_transform
+	launch_point.get_global_transform()
+	new_ball.throw(throw_force)
+	#TODO add correct impulse
+#	new_ball.apply_central_impulse(Vector3(10., 10., 10.))
 
 
 func toggle_laser():

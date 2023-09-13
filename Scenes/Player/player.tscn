@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmp03r3e0fha3"]
+[gd_scene load_steps=15 format=3 uid="uid://dmp03r3e0fha3"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_4jd05"]
 [ext_resource type="PackedScene" uid="uid://bmjtlxk5ehrr4" path="res://Scenes/ScreenProjectionMesh/screen_projection_mesh.tscn" id="2_3uow2"]
 [ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_s5j4t"]
+[ext_resource type="PackedScene" uid="uid://dwrc3pcai0kgo" path="res://Scenes/Ball/ball.tscn" id="4_tvaa7"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2lxlu"]
 
@@ -14,6 +15,107 @@ albedo_color = Color(1, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_ljxg5"]
 material = SubResource("StandardMaterial3D_js6rt")
 size = Vector3(0.05, 0.01, 10000)
+
+[sub_resource type="Animation" id="Animation_24bn7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ball:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xdpvw"]
+resource_name = "move"
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.245647, 0.5, 0.75),
+"transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.02, 0.01, 0), Vector3(0, 0, 0), Vector3(0.02, 0.01, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_acn2c"]
+resource_name = "prepare_throw"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 0.5),
+"update": 0,
+"values": [Vector3(-0.25, 0.2, 0), Vector3(-0.25, 0.2, 0.025)]
+}
+
+[sub_resource type="Animation" id="Animation_a4jak"]
+resource_name = "after_throwing"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector3(0, 0, 0.284175), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xtsut"]
+resource_name = "hold_throw"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwf73"]
+_data = {
+"RESET": SubResource("Animation_24bn7"),
+"after_throwing": SubResource("Animation_a4jak"),
+"hold_throw": SubResource("Animation_xtsut"),
+"move": SubResource("Animation_xdpvw"),
+"prepare_throw": SubResource("Animation_acn2c")
+}
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_4jd05")
@@ -28,6 +130,7 @@ shape = SubResource("CapsuleShape3D_0asg4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="ScreenProjectionMesh" parent="Camera3D" instance=ExtResource("2_3uow2")]
+visible = false
 
 [node name="ReticleSprite" type="Sprite3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
@@ -41,3 +144,16 @@ texture = ExtResource("3_s5j4t")
 [node name="ShootBeamMesh" type="MeshInstance3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 mesh = SubResource("BoxMesh_ljxg5")
+
+[node name="Weapon" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.33, -0.525)
+
+[node name="Ball" parent="Camera3D/Weapon" instance=ExtResource("4_tvaa7")]
+
+[node name="BallAnimationPlayer" type="AnimationPlayer" parent="Camera3D/Weapon"]
+libraries = {
+"": SubResource("AnimationLibrary_kwf73")
+}
+
+[node name="launch_point" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75)
