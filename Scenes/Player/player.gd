@@ -4,6 +4,8 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
+const PUSH_FORCE_FACTOR = 10.
+
 const MIN_THROW_FORCE = 10.
 const MAX_THROW_FORCE = 100.
 const THROW_FORCE_INCREASE_FACTOR = 20.
@@ -89,6 +91,14 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	
+	# after calling move_and_slide()
+	for i in get_slide_collision_count():
+		var c = get_slide_collision(i)
+		var collider = c.get_collider()
+		if collider.has_method("apply_central_impulse"):
+			collider.apply_central_impulse(-c.get_normal() * PUSH_FORCE_FACTOR)
+			
+	
 	if (is_shooting):
 		throw_force += delta * THROW_FORCE_INCREASE_FACTOR
 	else:
@@ -121,13 +131,11 @@ func stop_shooting():
 func launch_ball():
 	ball_anim_player.play("after_throwing")
 	var new_ball:ThrowingBall = ball_scene.instantiate()
+	new_ball.linear_velocity = get_real_velocity()
 	get_parent().add_child(new_ball)
-#	new_ball.global_position = launch_point.global_position
 	new_ball.global_transform = launch_point.global_transform
 	launch_point.get_global_transform()
 	new_ball.throw(throw_force)
-	#TODO add correct impulse
-#	new_ball.apply_central_impulse(Vector3(10., 10., 10.))
 
 
 func toggle_laser():

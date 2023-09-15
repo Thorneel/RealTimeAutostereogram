@@ -18,6 +18,8 @@ radius = 0.1
 height = 0.2
 
 [node name="Ball" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 3
 physics_material_override = SubResource("PhysicsMaterial_mupvj")
 script = ExtResource("1_75iub")
 

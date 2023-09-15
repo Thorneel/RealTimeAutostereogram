@@ -43,6 +43,38 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_a4jak"]
+resource_name = "after_throwing"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector3(0, 0, 0.284175), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xtsut"]
+resource_name = "hold_throw"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ball:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_xdpvw"]
 resource_name = "move"
 loop_mode = 1
@@ -76,38 +108,6 @@ tracks/0/keys = {
 "values": [Vector3(-0.25, 0.2, 0), Vector3(-0.25, 0.2, 0.025)]
 }
 
-[sub_resource type="Animation" id="Animation_a4jak"]
-resource_name = "after_throwing"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Ball:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(0.5, 0.5),
-"update": 0,
-"values": [Vector3(0, 0, 0.284175), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_xtsut"]
-resource_name = "hold_throw"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Ball:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kwf73"]
 _data = {
 "RESET": SubResource("Animation_24bn7"),
@@ -118,6 +118,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D"]
+collision_mask = 3
 script = ExtResource("1_4jd05")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -149,6 +150,7 @@ mesh = SubResource("BoxMesh_ljxg5")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.33, -0.525)
 
 [node name="Ball" parent="Camera3D/Weapon" instance=ExtResource("4_tvaa7")]
+visible = false
 
 [node name="BallAnimationPlayer" type="AnimationPlayer" parent="Camera3D/Weapon"]
 libraries = {
