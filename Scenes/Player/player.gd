@@ -40,12 +40,7 @@ func _ready():
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("mouse_mode"):
-		if (Input.mouse_mode == Input.MOUSE_MODE_CAPTURED):
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			is_mouse_captured = false
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			is_mouse_captured = true
+		pass
 	
 	if is_mouse_captured and event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * .005)

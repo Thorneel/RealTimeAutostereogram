@@ -1,0 +1,152 @@
+[gd_scene load_steps=2 format=3 uid="uid://barmdauf4bwxu"]
+
+[ext_resource type="Script" path="res://Scenes/Menu/menu.gd" id="1_t72ru"]
+
+[node name="Menu" type="Node2D"]
+script = ExtResource("1_t72ru")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+process_mode = 2
+offset_left = 128.0
+offset_top = 96.0
+offset_right = 128.0
+offset_bottom = 576.0
+
+[node name="TabContainer" type="TabContainer" parent="."]
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 576.0
+
+[node name="Menu" type="Control" parent="TabContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Menu/MarginContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="VBoxContainer" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ReturnButton" type="Button" parent="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer"]
+layout_mode = 2
+text = "Return"
+
+[node name="QuitButton" type="Button" parent="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="KeyLabelContainer" type="VBoxContainer" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="WASDLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "W A S D "
+
+[node name="SpacebarLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Spacebar "
+
+[node name="LMBLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Left mouse button  "
+
+[node name="RMBLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Right mouse button "
+
+[node name="BackspaceLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Backspace "
+
+[node name="EnterKeyLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Enter "
+
+[node name="AKeyLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "A "
+
+[node name="CommandLabelContainer" type="VBoxContainer" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MovementLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Movement"
+
+[node name="JumpLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Jump"
+
+[node name="ShootLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Launch a ball"
+
+[node name="UnusedLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Unused"
+
+[node name="ToggleASGLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Toggle autostereogram effect"
+
+[node name="ToggleImageLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Toggle image superimposition on autostereogram"
+
+[node name="ToggleBeamLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Toggle reference beam"
+
+[node name="Settings" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="About" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="TabContainer/About"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 896.0
+offset_bottom = 512.0
+
+[node name="InformationLabel" type="Label" parent="TabContainer/About/BoxContainer"]
+custom_minimum_size = Vector2(850, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+text = "This is a test environment meant to showcase the real-time generation of an autostereogram image. The autostereogram is generated from the depth information of the 3D environment.
+This is a \"wall-eye\" autostereogram, meaning that the image will appear as the eyes diverge (as if you were looking at a wall behind the screen), and will all seem to be behind the screen. There are also \"cross-eye\" autostereograms, where it all seems to be in front of the screen. If you attempt to see this one that way, you will see an inversion of the image displayed instead.
+
+It is recommended to check the settings, as incorrect eye distance can lead to incorrect depth scale or preventing the effect altogether.
+It is not recommended to watch the effect only a few minutes at a time.
+
+For seeing the autostereogram effect, you must let your eyes diverge until the 3D effect appears. You don't have to try and keep the image from being blurry, it will naturally sharpen as the effect becomes visible.
+There are two reference dots at the center of the screen. Let your eyes diverge as if you were looking at a great distance behind the screen, until those two dots seem to become one.
+It can initially be difficult to see the effect, and take significant time. It however becomes easier with practice."
+autowrap_mode = 3
+
+[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
+position = Vector2i(90, 220)
+size = Vector2i(200, 80)
+
+[connection signal="pressed" from="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
