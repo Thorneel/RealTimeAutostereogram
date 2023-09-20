@@ -2,10 +2,8 @@ extends MeshInstance3D
 
 
 var mat:Material = get_mesh().get_material()
-var noise_img_1:NoiseTexture2D = mat.get_shader_parameter("noise_img_1")
-var noise_img_2:NoiseTexture2D = mat.get_shader_parameter("noise_img_2")
-var noise_1:Noise = noise_img_1.get_noise()
-var noise_2:Noise = noise_img_2.get_noise()
+var noise_img:NoiseTexture2D = mat.get_shader_parameter("noise_img")
+var noise:Noise = noise_img.get_noise()
 var random:RandomNumberGenerator = RandomNumberGenerator.new()
 
 var proportion:float = 1.;
@@ -21,23 +19,10 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	_change_noise()
-	pass
 
 
 func _change_noise():
-	if is_proportion_descending:
-		proportion -= prop_step
-		if proportion <= 0.:
-			proportion = 0.
-			is_proportion_descending = false
-			noise_1.seed = random.randi()
-	else:
-		proportion += prop_step
-		if proportion >= 1.:
-			proportion = 1.
-			is_proportion_descending = true
-			noise_2.seed = random.randi()
-	mat.set_shader_parameter("noise_img_1_proportion", proportion)
+	noise.seed = random.randi()
 
 
 func toggle_screen():

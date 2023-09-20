@@ -17,10 +17,8 @@ uniform float depth_scale = 1.;
 
 uniform bool wall_eyed = true;
 
-uniform sampler2D noise_img_1;
-uniform sampler2D noise_img_2;
-uniform float noise_img_1_proportion = 1.; // between 0 and 1
-uniform bool use_greyscale = true; // TODO currently unused
+uniform sampler2D noise_img;
+uniform bool use_greyscale = true;
 uniform vec2 noise_displ_green = vec2(73., 377.); // TODO currently unused
 uniform vec2 noise_displ_blue = vec2(183., 271.); // TODO currently unused
 uniform sampler2D pattern_img;
@@ -177,7 +175,7 @@ vec3 addReticles(vec3 initial_color, vec2 uv_coord, vec2 viewport_size,
 }
 
 
-vec3 getNoiseColor(vec2 noise_pix_coord, sampler2D noise_img){
+vec3 getNoiseColor(vec2 noise_pix_coord){
 	vec2 noise_res = vec2(textureSize(noise_img, 0));
 	vec2 noise_coord = noise_pix_coord / noise_res;
 	vec3 noise_color = textureLod(noise_img, noise_coord, 0.0).rgb;
@@ -186,10 +184,10 @@ vec3 getNoiseColor(vec2 noise_pix_coord, sampler2D noise_img){
 }
 
 
-vec3 getColoredNoiseColor(vec2 noise_pix_coord, sampler2D noise_img){
-	vec3 result_color = getNoiseColor(noise_pix_coord, noise_img);
-	result_color.g = getNoiseColor(noise_pix_coord + noise_displ_green, noise_img).g;
-	result_color.b = getNoiseColor(noise_pix_coord + noise_displ_blue, noise_img).b;
+vec3 getColoredNoiseColor(vec2 noise_pix_coord){
+	vec3 result_color = getNoiseColor(noise_pix_coord);
+	result_color.g = getNoiseColor(noise_pix_coord + noise_displ_green).g;
+	result_color.b = getNoiseColor(noise_pix_coord + noise_displ_blue).b;
 	return result_color;
 }
 
@@ -201,17 +199,11 @@ void fragment() {
 	
 	vec3 noise_color;
 	if (use_noise) {
-		vec3 noise_color_1;
-		vec3 noise_color_2;
-		if (use_greyscale){
-			noise_color_1 = getNoiseColor(noise_pix_coord, noise_img_1);
-			noise_color_2 = getNoiseColor(noise_pix_coord, noise_img_2);
+		if (use_greyscale) {
+			noise_color = getNoiseColor(noise_pix_coord);
 		} else {
-			noise_color_1 = getColoredNoiseColor(noise_pix_coord, noise_img_1);
-			noise_color_2 = getColoredNoiseColor(noise_pix_coord, noise_img_2);
+			noise_color = getColoredNoiseColor(noise_pix_coord);
 		}
-		float proportion = clamp(noise_img_1_proportion, 0., 1.);
-		noise_color = noise_color_1 * proportion + noise_color_2 * (1. - proportion);
 	} else {
 		vec2 noise_res = vec2(textureSize(pattern_img, 0));
 		vec2 noise_coord = noise_pix_coord / noise_res;
@@ -244,5 +236,7 @@ void fragment() {
 //	ALBEDO = textureLod(screen_texture, noise_pix_coord / VIEWPORT_SIZE, 0.0).rgb;
 	
 //	ALBEDO = (color_result * 2. + clamp(vec3(linear_depth / 8000.), 0., 1.)) / 3.;
+	
+//	ALBEDO = getNoiseColor(SCREEN_UV * VIEWPORT_SIZE, noise_img_1);
 	
 }
