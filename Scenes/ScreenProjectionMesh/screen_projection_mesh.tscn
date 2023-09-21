@@ -15,7 +15,7 @@ noise = SubResource("FastNoiseLite_pfq3r")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tghil"]
 render_priority = 0
 shader = ExtResource("1_8u55l")
-shader_parameter/eye_distance_in_pixels = 180.0
+shader_parameter/eye_distance_in_pixels = 160.0
 shader_parameter/min_distance_in_pixels = 250.0
 shader_parameter/pixel_per_meter = 4331.0
 shader_parameter/eye_screen_distance_in_pixels = 3000.0
@@ -28,7 +28,7 @@ shader_parameter/noise_displ_green = Vector2(73, 377)
 shader_parameter/noise_displ_blue = Vector2(183, 271)
 shader_parameter/use_noise = true
 shader_parameter/round_colors = false
-shader_parameter/show_screen = true
+shader_parameter/show_screen = false
 shader_parameter/reticle_opacity = 0.2
 shader_parameter/noise_img = SubResource("NoiseTexture2D_sy8s8")
 shader_parameter/pattern_img = ExtResource("2_nr00s")

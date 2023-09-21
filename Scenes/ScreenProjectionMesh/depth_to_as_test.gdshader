@@ -7,7 +7,7 @@ struct ModifiedColor {
 	vec3 color;
 };
 
-uniform float eye_distance_in_pixels = 200.; // also separation for furthest object
+uniform float eye_distance_in_pixels = 160.; // also separation for furthest object
 uniform float min_distance_in_pixels = 250.; // between closest object and screen
 uniform float pixel_per_meter = 4331.; // on the screen
 uniform float eye_screen_distance_in_pixels = 3000.;
@@ -22,7 +22,7 @@ uniform bool use_greyscale = true;
 uniform vec2 noise_displ_green = vec2(73., 377.); // TODO currently unused
 uniform vec2 noise_displ_blue = vec2(183., 271.); // TODO currently unused
 uniform sampler2D pattern_img;
-uniform bool use_noise = false;
+uniform bool use_noise = true;
 
 uniform bool round_colors = false;
 

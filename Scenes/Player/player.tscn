@@ -144,6 +144,7 @@ texture = ExtResource("3_s5j4t")
 
 [node name="ShootBeamMesh" type="MeshInstance3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+visible = false
 mesh = SubResource("BoxMesh_ljxg5")
 
 [node name="Weapon" type="Node3D" parent="Camera3D"]
