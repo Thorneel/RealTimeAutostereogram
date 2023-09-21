@@ -2,21 +2,46 @@
 
 [ext_resource type="Script" path="res://Scenes/Menu/menu.gd" id="1_t72ru"]
 
-[node name="Menu" type="Node2D"]
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_t72ru")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 process_mode = 2
-offset_left = 128.0
-offset_top = 96.0
-offset_right = 128.0
-offset_bottom = 576.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -440.0
+offset_top = -220.0
+offset_right = 440.0
+offset_bottom = 252.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="TabContainer" type="TabContainer" parent="."]
-offset_left = 128.0
-offset_top = 64.0
-offset_right = 1024.0
-offset_bottom = 576.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -448.0
+offset_top = -256.0
+offset_right = 448.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Menu" type="Control" parent="TabContainer"]
 layout_mode = 2
@@ -121,17 +146,15 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
-[node name="BoxContainer" type="BoxContainer" parent="TabContainer/About"]
-layout_mode = 0
-offset_top = 32.0
+[node name="CenterContainer" type="CenterContainer" parent="TabContainer/About"]
+layout_mode = 1
 offset_right = 896.0
-offset_bottom = 512.0
+offset_bottom = 480.0
 
-[node name="InformationLabel" type="Label" parent="TabContainer/About/BoxContainer"]
+[node name="InformationLabel" type="Label" parent="TabContainer/About/CenterContainer"]
 custom_minimum_size = Vector2(850, 0)
 layout_mode = 2
 size_flags_horizontal = 6
-size_flags_vertical = 0
 text = "This is a test environment meant to showcase the real-time generation of an autostereogram image. The autostereogram is generated from the depth information of the 3D environment.
 This is a \"wall-eye\" autostereogram, meaning that the image will appear as the eyes diverge (as if you were looking at a wall behind the screen), and will all seem to be behind the screen. There are also \"cross-eye\" autostereograms, where it all seems to be in front of the screen. If you attempt to see this one that way, you will see an inversion of the image displayed instead.
 

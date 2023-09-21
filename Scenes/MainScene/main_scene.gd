@@ -1,7 +1,7 @@
 extends Node
 
 
-@onready var menu:Node2D = $Menu
+@onready var menu:Control = $Menu
 @onready var test_environment:Node3D = $TestEnvironment
 
 

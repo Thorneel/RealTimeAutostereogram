@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 
 @onready var tab_container:TabContainer = $TabContainer
