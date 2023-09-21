@@ -7,7 +7,7 @@ struct ModifiedColor {
 	vec3 color;
 };
 
-uniform float eye_half_distance_in_pixels = 116.; // also separation for furthest object
+uniform float eye_distance_in_pixels = 200.; // also separation for furthest object
 uniform float min_distance_in_pixels = 250.; // between closest object and screen
 uniform float pixel_per_meter = 4331.; // on the screen
 uniform float eye_screen_distance_in_pixels = 3000.;
@@ -54,7 +54,7 @@ float getLinearDepth(vec2 coord, mat4 inv_projection_matrix){
 
 
 /*
-Gives the horizontal pixel half-separation required by this linear depth
+Gives the horizontal pixel separation required by this linear depth
 from the backgroudn texture to achieve autostereogram effect
 */
 float getPixelSeparation(float linear_depth) {
@@ -65,14 +65,13 @@ float getPixelSeparation(float linear_depth) {
 	
 	float linear_depth_in_pixels = linear_depth * pixel_per_meter * depth_scale;
 	
-	float half_separation_in_pixels = eye_half_distance_in_pixels * (
+	float separation_in_pixels = eye_distance_in_pixels * (
 		min_distance_in_pixels + linear_depth_in_pixels
 	) / (
 		eye_screen_distance_in_pixels + min_distance_in_pixels + linear_depth_in_pixels
 	);
 	
-	float pixel_separation = half_separation_in_pixels * 2.;
-	return pixel_separation;
+	return separation_in_pixels;
 }
 
 
@@ -85,7 +84,7 @@ float getOffsetFromCentralPixel(mat4 inv_projection_matrix){
 
 vec2 getNoisePixelCoord(vec2 uv_coord, vec2 viewport_size, mat4 inv_projection_matrix){
 	
-	float pixel_repeat = (eye_half_distance_in_pixels * depth_scale * 2.) + 1.;
+	float pixel_repeat = (eye_distance_in_pixels * depth_scale * 2.) + 1.;
 	
 	vec2 pix_coord = uv_coord * viewport_size;
 	float left_offset = getOffsetFromCentralPixel(inv_projection_matrix);

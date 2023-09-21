@@ -6,7 +6,14 @@ extends Node
 
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed("quit"):
+	
+	if Input.is_action_just_pressed("toggle_autostereogram"):
+		Events.emit_signal("toggle_autostereogram")
+	
+	if Input.is_action_just_pressed("toggle_screen_in_autostereogram"):
+		Events.emit_signal("toggle_image_overlay")
+	
+	if Input.is_action_just_pressed("menu"):
 		menu.toggle()
 
 
@@ -16,5 +23,5 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass

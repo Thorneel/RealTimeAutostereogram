@@ -15,7 +15,7 @@ noise = SubResource("FastNoiseLite_pfq3r")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tghil"]
 render_priority = 0
 shader = ExtResource("1_8u55l")
-shader_parameter/eye_half_distance_in_pixels = 80.0
+shader_parameter/eye_distance_in_pixels = 200.0
 shader_parameter/min_distance_in_pixels = 250.0
 shader_parameter/pixel_per_meter = 4331.0
 shader_parameter/eye_screen_distance_in_pixels = 3000.0
@@ -40,6 +40,7 @@ flip_faces = true
 size = Vector2(2, 2)
 
 [node name="ScreenProjectionMesh" type="MeshInstance3D"]
+process_mode = 3
 cast_shadow = 0
 extra_cull_margin = 16384.0
 ignore_occlusion_culling = true

@@ -47,12 +47,6 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * .005)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 	
-	if Input.is_action_just_pressed("toggle_autostereogram"):
-		proj_mesh.visible = !proj_mesh.visible;
-	
-	if Input.is_action_just_pressed("toggle_screen_in_autostereogram"):
-		proj_mesh.toggle_screen()
-	
 	if Input.is_action_just_pressed("shoot"):
 		start_shooting()
 	

@@ -27,7 +27,7 @@ offset_right = 440.0
 offset_bottom = 252.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.25098, 0.25098, 0.25098, 1)
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 1
@@ -167,7 +167,7 @@ It can initially be difficult to see the effect, and take significant time. It h
 autowrap_mode = 3
 
 [node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
-position = Vector2i(90, 220)
+initial_position = 2
 size = Vector2i(200, 80)
 
 [connection signal="pressed" from="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer/ReturnButton" to="." method="_on_return_button_pressed"]
