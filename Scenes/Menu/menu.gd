@@ -149,3 +149,11 @@ func _on_plus_10_button_pressed():
 
 func _on_eye_distance_scroll_bar_value_changed(new_eye_distance):
 	_change_eye_distance(new_eye_distance)
+
+
+func _on_reset_position_button_pressed():
+	Events.emit_signal("reset_player_position")
+
+
+func _on_reset_all_button_pressed():
+	Events.emit_signal("reset_environment")

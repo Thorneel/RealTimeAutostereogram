@@ -63,10 +63,19 @@ layout_mode = 2
 
 [node name="ButtonContainer" type="VBoxContainer" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="ReturnButton" type="Button" parent="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer"]
 layout_mode = 2
 text = "Return"
+
+[node name="ResetPositionButton" type="Button" parent="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer"]
+layout_mode = 2
+text = "Reset position"
+
+[node name="ResetAllButton" type="Button" parent="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer"]
+layout_mode = 2
+text = "Reset environment"
 
 [node name="QuitButton" type="Button" parent="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer"]
 layout_mode = 2
@@ -236,6 +245,8 @@ initial_position = 2
 size = Vector2i(200, 80)
 
 [connection signal="pressed" from="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer/ResetPositionButton" to="." method="_on_reset_position_button_pressed"]
+[connection signal="pressed" from="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer/ResetAllButton" to="." method="_on_reset_all_button_pressed"]
 [connection signal="pressed" from="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/Minus10Button" to="." method="_on_minus_10_button_pressed"]
 [connection signal="pressed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/Minus1button" to="." method="_on_minus_1_button_pressed"]

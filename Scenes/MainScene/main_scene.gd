@@ -4,6 +4,8 @@ extends Node
 @onready var menu:Control = $Menu
 @onready var test_environment:Node3D = $TestEnvironment
 
+var test_env_scene = preload("res://Scenes/TestEnvironment/test_environment.tscn")
+
 
 func _unhandled_input(_event):
 	
@@ -19,9 +21,16 @@ func _unhandled_input(_event):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	Events.connect("reset_environment", Callable(self, "_on_reset_environment"))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
+
+
+func _on_reset_environment():
+	remove_child(test_environment)
+	test_environment = test_env_scene.instantiate()
+	add_child(test_environment)
+	
