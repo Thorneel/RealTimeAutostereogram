@@ -43,10 +43,10 @@ offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Menu" type="Control" parent="TabContainer"]
+[node name="Main" type="Control" parent="TabContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Menu"]
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Main"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,89 +58,154 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Menu/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Main/MarginContainer"]
 layout_mode = 2
 
-[node name="ButtonContainer" type="VBoxContainer" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+[node name="ButtonContainer" type="VBoxContainer" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ReturnButton" type="Button" parent="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer"]
+[node name="ReturnButton" type="Button" parent="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer"]
 layout_mode = 2
 text = "Return"
 
-[node name="QuitButton" type="Button" parent="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer"]
+[node name="QuitButton" type="Button" parent="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer"]
 layout_mode = 2
 text = "Quit"
 
-[node name="VSeparator" type="VSeparator" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="KeyLabelContainer" type="VBoxContainer" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+[node name="KeyLabelContainer" type="VBoxContainer" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="WASDLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="WASDLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "W A S D "
 
-[node name="SpacebarLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="SpacebarLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "Spacebar "
 
-[node name="LMBLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="LMBLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "Left mouse button  "
 
-[node name="RMBLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="RMBLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "Right mouse button "
 
-[node name="BackspaceLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="BackspaceLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "Backspace "
 
-[node name="EnterKeyLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="EnterKeyLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "Enter "
 
-[node name="AKeyLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/KeyLabelContainer"]
+[node name="AKeyLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
 layout_mode = 2
 text = "A "
 
-[node name="CommandLabelContainer" type="VBoxContainer" parent="TabContainer/Menu/MarginContainer/HBoxContainer"]
+[node name="CommandLabelContainer" type="VBoxContainer" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="MovementLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="MovementLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Movement"
 
-[node name="JumpLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="JumpLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Jump"
 
-[node name="ShootLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="ShootLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Launch a ball"
 
-[node name="UnusedLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="UnusedLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Unused"
 
-[node name="ToggleASGLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="ToggleASGLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Toggle autostereogram effect"
 
-[node name="ToggleImageLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="ToggleImageLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Toggle image superimposition on autostereogram"
 
-[node name="ToggleBeamLabel" type="Label" parent="TabContainer/Menu/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="ToggleBeamLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Toggle reference beam"
 
 [node name="Settings" type="Control" parent="TabContainer"]
 visible = false
 layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Settings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 896.0
+offset_bottom = 481.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="SettingContainer" type="VBoxContainer" parent="TabContainer/Settings/MarginContainer"]
+layout_mode = 2
+
+[node name="EyeDistanceLabel" type="Label" parent="TabContainer/Settings/MarginContainer/SettingContainer"]
+layout_mode = 2
+text = "Eye distance (in pixels)"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Settings/MarginContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Minus10Button" type="Button" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer"]
+layout_mode = 2
+text = "<<"
+
+[node name="Minus1button" type="Button" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer"]
+layout_mode = 2
+text = "<"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="EyeDistanceProgressBar" type="ProgressBar" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(512, 10)
+layout_mode = 2
+min_value = 20.0
+max_value = 512.0
+step = 1.0
+value = 180.0
+rounded = true
+show_percentage = false
+
+[node name="EyeDistanceScrollBar" type="HScrollBar" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(512, 10)
+layout_mode = 2
+min_value = 20.0
+max_value = 512.0
+step = 1.0
+value = 180.0
+
+[node name="Plus1Button" type="Button" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer"]
+layout_mode = 2
+text = ">"
+
+[node name="Plus10Button" type="Button" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer"]
+layout_mode = 2
+text = ">>"
+
+[node name="EyeDistanceValueLabel" type="Label" parent="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer"]
+layout_mode = 2
+text = "180"
 
 [node name="About" type="Control" parent="TabContainer"]
 visible = false
@@ -170,6 +235,11 @@ autowrap_mode = 3
 initial_position = 2
 size = Vector2i(200, 80)
 
-[connection signal="pressed" from="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer/ReturnButton" to="." method="_on_return_button_pressed"]
-[connection signal="pressed" from="TabContainer/Menu/MarginContainer/HBoxContainer/ButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="TabContainer/Main/MarginContainer/HBoxContainer/ButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/Minus10Button" to="." method="_on_minus_10_button_pressed"]
+[connection signal="pressed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/Minus1button" to="." method="_on_minus_1_button_pressed"]
+[connection signal="value_changed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/VBoxContainer/EyeDistanceScrollBar" to="." method="_on_eye_distance_scroll_bar_value_changed"]
+[connection signal="pressed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/Plus1Button" to="." method="_on_plus_1_button_pressed"]
+[connection signal="pressed" from="TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/Plus10Button" to="." method="_on_plus_10_button_pressed"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
