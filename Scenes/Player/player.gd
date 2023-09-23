@@ -39,9 +39,6 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if Input.is_action_just_pressed("mouse_mode"):
-		pass
-	
 	if is_mouse_captured and event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * .005)
 		camera.rotate_x(-event.relative.y * .005)
