@@ -3,6 +3,8 @@
 A shader that generates an autostereogram from a 3D environment, by using the depth map.
 A first-person environment is included for testing and demonstration purposes.
 
+Made with Godot 4.1.1
+
 
 ## What is an autostereogram?
 
