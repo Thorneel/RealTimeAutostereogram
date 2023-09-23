@@ -53,6 +53,9 @@ func _unhandled_input(event):
 	if Input.is_action_just_released("shoot"):
 		stop_shooting()
 	
+	if Input.is_action_just_pressed("alt_shoot"):
+		launch_ball(true)
+	
 	if Input.is_action_just_pressed("laser"):
 		toggle_laser()
 	
@@ -117,13 +120,16 @@ func stop_shooting():
 	is_shooting = false
 
 
-func launch_ball():
+func launch_ball(big:bool = false):
 	ball_anim_player.play("after_throwing")
 	var new_ball:ThrowingBall = ball_scene.instantiate()
-	new_ball.linear_velocity = get_real_velocity()
+	new_ball.set_linear_velocity(get_real_velocity())
 	get_parent().add_child(new_ball)
-	new_ball.global_transform = launch_point.global_transform
-	launch_point.get_global_transform()
+	new_ball.set_global_transform(launch_point.get_global_transform())
+	if (big):
+		new_ball.set_radius(0.3)
+		new_ball.set_mass(10.)
+	
 	new_ball.throw(throw_force)
 
 

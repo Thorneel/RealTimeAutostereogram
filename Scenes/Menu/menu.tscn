@@ -131,9 +131,9 @@ text = " : Jump"
 layout_mode = 2
 text = " : Launch a ball"
 
-[node name="UnusedLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
+[node name="AltShootLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
-text = " : Unused"
+text = " : Launch a large ball"
 
 [node name="ToggleASGLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
