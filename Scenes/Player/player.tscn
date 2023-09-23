@@ -118,7 +118,8 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D"]
-collision_mask = 3
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_4jd05")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -159,4 +160,3 @@ libraries = {
 }
 
 [node name="launch_point" type="Node3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75)

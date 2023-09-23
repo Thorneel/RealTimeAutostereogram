@@ -18,8 +18,8 @@ radius = 0.1
 height = 0.2
 
 [node name="Ball" type="RigidBody3D"]
-collision_layer = 2
-collision_mask = 3
+collision_layer = 4
+collision_mask = 7
 physics_material_override = SubResource("PhysicsMaterial_mupvj")
 script = ExtResource("1_75iub")
 
@@ -28,3 +28,12 @@ shape = SubResource("SphereShape3D_jpaq7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_o46gm")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="SameCollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_jpaq7")
+
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

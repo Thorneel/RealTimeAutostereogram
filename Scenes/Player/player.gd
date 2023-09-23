@@ -6,9 +6,9 @@ const JUMP_VELOCITY = 4.5
 
 const PUSH_FORCE_FACTOR = 10.
 
-const MIN_THROW_FORCE = 10.
-const MAX_THROW_FORCE = 100.
-const THROW_FORCE_INCREASE_FACTOR = 20.
+const MIN_THROW_FORCE = 2.
+const MAX_THROW_FORCE = 20.
+const THROW_FORCE_INCREASE_FACTOR = 5.
 
 
 @onready var camera = $Camera3D
@@ -129,6 +129,7 @@ func launch_ball(big:bool = false):
 		new_ball.set_radius(0.3)
 		new_ball.set_mass(10.)
 	
+	new_ball.ignore_body_until_out(self)
 	new_ball.throw(throw_force)
 
 
