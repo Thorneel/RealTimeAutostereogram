@@ -31,7 +31,6 @@ var is_shooting:bool = false
 var throw_force = MIN_THROW_FORCE
 
 
-
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	is_mouse_captured = true
@@ -39,25 +38,28 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if is_mouse_captured and event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * .005)
-		camera.rotate_x(-event.relative.y * .005)
-		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+	if (event is InputEventMouseMotion):
+		if is_mouse_captured:
+			rotate_y(-event.relative.x * .005)
+			camera.rotate_x(-event.relative.y * .005)
+			camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 	
-	if Input.is_action_just_pressed("shoot"):
-		start_shooting()
-	
-	if Input.is_action_just_released("shoot"):
-		stop_shooting()
-	
-	if Input.is_action_just_pressed("alt_shoot"):
-		launch_ball(true)
-	
-	if Input.is_action_just_pressed("laser"):
-		toggle_laser()
-	
-	if Input.is_action_just_pressed("use"):
-		use()
+	elif (event is InputEventMouseButton):
+		if Input.is_action_just_pressed("shoot"):
+			start_shooting()
+		
+		if Input.is_action_just_released("shoot"):
+			stop_shooting()
+		
+		if Input.is_action_just_pressed("alt_shoot"):
+			launch_ball(true)
+		
+	elif (event is InputEventKey):
+		if Input.is_action_just_pressed("laser"):
+			toggle_laser()
+		
+		if Input.is_action_just_pressed("use"):
+			use()
 
 
 func _physics_process(delta):
