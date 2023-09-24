@@ -132,7 +132,6 @@ shape = SubResource("CapsuleShape3D_0asg4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="ScreenProjectionMesh" parent="Camera3D" instance=ExtResource("2_3uow2")]
-visible = false
 
 [node name="ReticleSprite" type="Sprite3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)

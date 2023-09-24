@@ -116,6 +116,10 @@ text = "Enter "
 layout_mode = 2
 text = "A "
 
+[node name="EscapeLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Escape "
+
 [node name="CommandLabelContainer" type="VBoxContainer" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
@@ -146,6 +150,10 @@ text = " : Toggle image superimposition on autostereogram"
 [node name="ToggleBeamLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
 layout_mode = 2
 text = " : Toggle reference beam"
+
+[node name="ToggleMenuLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = " : Open/close menu"
 
 [node name="Settings" type="Control" parent="TabContainer"]
 visible = false

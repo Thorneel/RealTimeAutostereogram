@@ -22,6 +22,8 @@ func _unhandled_input(_event):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect("reset_environment", Callable(self, "_on_reset_environment"))
+	
+	menu.toggle()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
