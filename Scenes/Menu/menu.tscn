@@ -42,9 +42,11 @@ offset_right = 448.0
 offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
+current_tab = 0
 
 [node name="Main" type="Control" parent="TabContainer"]
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/Main"]
 layout_mode = 1
@@ -120,6 +122,10 @@ text = "A "
 layout_mode = 2
 text = "Escape "
 
+[node name="LeftCtrlKeyLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/KeyLabelContainer"]
+layout_mode = 2
+text = "Left Control"
+
 [node name="CommandLabelContainer" type="VBoxContainer" parent="TabContainer/Main/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
@@ -155,9 +161,14 @@ text = " : Toggle reference beam"
 layout_mode = 2
 text = " : Open/close menu"
 
+[node name="ToggleStaticNoiseLabel" type="Label" parent="TabContainer/Main/MarginContainer/HBoxContainer/CommandLabelContainer"]
+layout_mode = 2
+text = ": Toggle between changing and static noise"
+
 [node name="Settings" type="Control" parent="TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="TabContainer/Settings"]
 layout_mode = 1
@@ -227,6 +238,7 @@ text = "180"
 [node name="About" type="Control" parent="TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="TabContainer/About"]
 layout_mode = 1
