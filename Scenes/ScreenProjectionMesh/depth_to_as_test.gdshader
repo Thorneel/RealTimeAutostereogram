@@ -38,7 +38,7 @@ uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nea
 // ********** VERTEX **********
 
 void vertex() {
- 	POSITION = vec4(VERTEX, 1.0);
+ 	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
 
 
