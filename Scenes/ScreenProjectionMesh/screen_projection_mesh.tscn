@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bmjtlxk5ehrr4"]
 
-[ext_resource type="Shader" path="res://Scenes/ScreenProjectionMesh/depth_to_as_test.gdshader" id="1_8u55l"]
-[ext_resource type="Texture2D" uid="uid://n4ek0mr1syje" path="res://Scenes/ScreenProjectionMesh/ugly_spiral.png" id="2_nr00s"]
+[ext_resource type="Shader" path="res://Scenes/ScreenProjectionMesh/center_to_borders_autostereogram.gdshader" id="1_wcv8o"]
+[ext_resource type="Texture2D" uid="uid://11etbyt177ym" path="res://Scenes/ScreenProjectionMesh/random_lines.png" id="2_t50ki"]
 [ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_hnrec"]
 [ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/screen_projection_mesh.gd" id="3_m755t"]
 
@@ -14,7 +14,7 @@ noise = SubResource("FastNoiseLite_pfq3r")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tghil"]
 render_priority = 0
-shader = ExtResource("1_8u55l")
+shader = ExtResource("1_wcv8o")
 shader_parameter/eye_distance_in_pixels = 160.0
 shader_parameter/min_distance_in_pixels = 250.0
 shader_parameter/pixel_per_meter = 4331.0
@@ -23,6 +23,7 @@ shader_parameter/min_culling = 0.0
 shader_parameter/max_culling = -1.0
 shader_parameter/depth_scale = 1.0
 shader_parameter/wall_eyed = true
+shader_parameter/from_center_to_borders = true
 shader_parameter/use_greyscale = true
 shader_parameter/noise_displ_green = Vector2(73, 377)
 shader_parameter/noise_displ_blue = Vector2(183, 271)
@@ -31,7 +32,7 @@ shader_parameter/round_colors = false
 shader_parameter/show_screen = false
 shader_parameter/reticle_opacity = 0.2
 shader_parameter/noise_img = SubResource("NoiseTexture2D_sy8s8")
-shader_parameter/pattern_img = ExtResource("2_nr00s")
+shader_parameter/pattern_img = ExtResource("2_t50ki")
 shader_parameter/reticle_img = ExtResource("3_hnrec")
 
 [sub_resource type="QuadMesh" id="QuadMesh_6372g"]
