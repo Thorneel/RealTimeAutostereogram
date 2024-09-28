@@ -30,6 +30,7 @@ uniform bool round_colors = false;
 
 uniform bool show_screen = false;
 
+uniform bool show_reticle = true;
 uniform sampler2D reticle_img;
 uniform float reticle_opacity = 0.2; // between 0 and 1
 
@@ -285,8 +286,10 @@ void fragment() {
 		color_result = ((color_result * 0.9) + (screen * 0.1));
 	}
 	
-	color_result = addReticles(color_result, SCREEN_UV, VIEWPORT_SIZE, 
-			INV_PROJECTION_MATRIX);
+	if (show_reticle){
+		color_result = addReticles(color_result, SCREEN_UV, VIEWPORT_SIZE, 
+				INV_PROJECTION_MATRIX);
+	}
 	
 	ALBEDO = color_result;
 	

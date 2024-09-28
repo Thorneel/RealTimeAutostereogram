@@ -30,6 +30,7 @@ shader_parameter/noise_displ_blue = Vector2(183, 271)
 shader_parameter/use_noise = true
 shader_parameter/round_colors = false
 shader_parameter/show_screen = false
+shader_parameter/show_reticle = true
 shader_parameter/reticle_opacity = 0.2
 shader_parameter/noise_img = SubResource("NoiseTexture2D_sy8s8")
 shader_parameter/pattern_img = ExtResource("2_t50ki")

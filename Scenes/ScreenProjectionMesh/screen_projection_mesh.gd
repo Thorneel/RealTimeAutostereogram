@@ -19,6 +19,7 @@ func _ready():
 	Events.connect("toggle_static_noise", Callable(self, "_on_toggle_static_noise"))
 	Events.connect("set_eye_distance", Callable(self, "_on_set_eye_distance"))
 	static_noise = Config.get_static_noise(static_noise)
+	mat.set_shader_parameter("show_reticle", !static_noise)
 
 
 
@@ -48,4 +49,5 @@ func _on_set_eye_distance(eye_distance:float):
 
 func _on_toggle_static_noise():
 	static_noise = !static_noise
+	mat.set_shader_parameter("display_reticle", !static_noise)
 	Config.save_static_noise(static_noise)
