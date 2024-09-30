@@ -12,7 +12,7 @@ const DEFAULT_EYE_DISTANCE:float = 160.
 @onready var eye_distance_progress_bar:ProgressBar = $TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/VBoxContainer/EyeDistanceProgressBar
 @onready var eye_distance_scroll_bar:HScrollBar = $TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/VBoxContainer/EyeDistanceScrollBar
 @onready var eye_distance_value_label:Label = $TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/EyeDistanceValueLabel
-
+@onready var wall_eyed_toggle_button:CheckButton = $TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer2/WallEyedButton
 
 var eye_distance:float = DEFAULT_EYE_DISTANCE
 
@@ -38,6 +38,7 @@ func _initialize_values():
 			and new_eye_distance < EYE_DISTANCE_MAX):
 		eye_distance = new_eye_distance
 		_update_eye_distance_menu_displays()
+	wall_eyed_toggle_button.button_pressed = Config.get_wall_eyed(true)
 
 
 ## PROCESSES ##
@@ -129,4 +130,4 @@ func _on_reset_all_button_pressed():
 
 
 func _on_wall_eyed_button_toggled(toggled_on: bool) -> void:
-	Events.emit_signal("wall_eyed_toggle", toggled_on)
+	Events.emit_signal("toggle_wall_eyed", toggled_on)
