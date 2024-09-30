@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://b27edeau1d236"]
+
+[ext_resource type="Script" path="res://Scenes/BoxTerrainBlock/box_terrain_block.gd" id="1_arp81"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_norw2"]
+resource_local_to_scene = true
+albedo_color = Color(0.87451, 0.87451, 0.937255, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0q6m1"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_norw2")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xhvyj"]
+resource_local_to_scene = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wyreu"]
+resource_local_to_scene = true
+
+[node name="BoxTerrainBlock" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_0q6m1")
+script = ExtResource("1_arp81")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_xhvyj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_wyreu")
