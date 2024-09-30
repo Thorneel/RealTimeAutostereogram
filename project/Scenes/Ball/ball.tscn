@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwrc3pcai0kgo"]
+
+[ext_resource type="Script" path="res://Scenes/Ball/ball.gd" id="1_75iub"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mupvj"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jpaq7"]
+resource_local_to_scene = true
+radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hyrak"]
+albedo_color = Color(0, 0.945098, 0.231373, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_o46gm"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_hyrak")
+radius = 0.1
+height = 0.2
+
+[node name="Ball" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 7
+physics_material_override = SubResource("PhysicsMaterial_mupvj")
+script = ExtResource("1_75iub")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_jpaq7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_o46gm")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="SameCollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_jpaq7")
+
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
