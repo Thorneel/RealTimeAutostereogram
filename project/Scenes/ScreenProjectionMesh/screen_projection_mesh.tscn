@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bmjtlxk5ehrr4"]
 
 [ext_resource type="Shader" path="res://Scenes/ScreenProjectionMesh/center_to_borders_autostereogram.gdshader" id="1_wcv8o"]
-[ext_resource type="Texture2D" uid="uid://11etbyt177ym" path="res://Scenes/ScreenProjectionMesh/random_lines.png" id="2_t50ki"]
+[ext_resource type="Texture2D" uid="uid://wjiwp2s824h6" path="res://Scenes/ScreenProjectionMesh/random_lines2.png" id="2_odxvr"]
 [ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_hnrec"]
 [ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/screen_projection_mesh.gd" id="3_m755t"]
 
@@ -27,13 +27,13 @@ shader_parameter/from_center_to_borders = true
 shader_parameter/use_greyscale = true
 shader_parameter/noise_displ_green = Vector2(73, 377)
 shader_parameter/noise_displ_blue = Vector2(183, 271)
-shader_parameter/use_noise = true
+shader_parameter/use_noise = false
 shader_parameter/round_colors = false
 shader_parameter/show_screen = false
 shader_parameter/show_reticle = true
 shader_parameter/reticle_opacity = 0.2
 shader_parameter/noise_img = SubResource("NoiseTexture2D_sy8s8")
-shader_parameter/pattern_img = ExtResource("2_t50ki")
+shader_parameter/pattern_img = ExtResource("2_odxvr")
 shader_parameter/reticle_img = ExtResource("3_hnrec")
 
 [sub_resource type="QuadMesh" id="QuadMesh_6372g"]
