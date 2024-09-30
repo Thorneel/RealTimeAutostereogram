@@ -129,4 +129,4 @@ func _on_reset_all_button_pressed():
 
 
 func _on_wall_eyed_button_toggled(toggled_on: bool) -> void:
-	Events.emit_signal("wall_eyed_toggle", toggled_on)
+	Events.emit_signal("toggle_wall_eyed", toggled_on)

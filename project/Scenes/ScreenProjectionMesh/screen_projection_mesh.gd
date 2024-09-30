@@ -19,7 +19,7 @@ func _ready():
 	Events.connect("toggle_image_overlay", Callable(self, "_on_toggle_image_overlay"))
 	Events.connect("toggle_static_noise", Callable(self, "_on_toggle_static_noise"))
 	Events.connect("set_eye_distance", Callable(self, "_on_set_eye_distance"))
-	Events.connect("wall_eyed_toggle", Callable(self, "_on_wall_eyed_toggle"))
+	Events.connect("toggle_wall_eyed", Callable(self, "_on_toggle_wall_eyed"))
 	static_noise = Config.get_static_noise(static_noise)
 	mat.set_shader_parameter("show_reticle", !static_noise)
 	mat.set_shader_parameter("wall_eyed", Config.get_wall_eyed(DEFAULT_WALL_EYED))
@@ -55,6 +55,6 @@ func _on_toggle_static_noise():
 	mat.set_shader_parameter("display_reticle", !static_noise)
 	Config.save_static_noise(static_noise)
 
-func _on_wall_eyed_toggle(wall_eyed:bool): # TODO why doesn't it work
+func _on_toggle_wall_eyed(wall_eyed:bool):
 	mat.set_shader_parameter("wall_eyed", wall_eyed)
 	Config.save_wall_eyed(wall_eyed)
