@@ -37,8 +37,6 @@ uniform float reticle_opacity = 0.2; // between 0 and 1
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
 
-const float very_large_positive_number = 1e20;
-
 
 // ********** VERTEX **********
 
@@ -103,7 +101,9 @@ vec2 getNoisePixelCoordCenterToBorders(vec2 uv_coord, vec2 viewport_size, mat4 i
 	bool left_of_center = current_pixel.x < screen_midpoint;
 	float offset_sign = left_of_center ? -1. : 1.;
 	
-	float side_offset = getPixelSeparationFromLinearDepth(very_large_positive_number) * 0.5;
+	float side_offset = eye_distance_in_pixels * 0.5; // TODO doesn't work
+	side_offset = getPixelSeparation(vec2(0.5, pix_coord.y), inv_projection_matrix) * 0.5; // TODO doesn't work either
+	side_offset = getPixelSeparation(pix_coord, inv_projection_matrix) * 0.5; // TODO doesn't work either
 	current_pixel.x -= side_offset * offset_sign;
 	
 	// arbitrarily large number, see if a number can be calculated instead?
@@ -140,21 +140,24 @@ vec2 getNoisePixelCoordCenterToBorders(vec2 uv_coord, vec2 viewport_size, mat4 i
 }
 
 
-vec2 getNoisePixelCoordLeftToRight(vec2 pix_coord, vec2 viewport_size, mat4 inv_projection_matrix){
+vec2 getNoisePixelSideToSide(vec2 pix_coord, vec2 viewport_size, mat4 inv_projection_matrix, 
+		bool left_to_right){
 	
 	float pixel_repeat = (eye_distance_in_pixels * depth_scale * 2.) + 1.;
+	float position_sign = left_to_right ? -1. : 1.;
 	
 	float left_offset = getOffsetFromCentralPixel(inv_projection_matrix);
 	
 	vec2 current_pixel = pix_coord;
-	current_pixel.x -= left_offset;
+	current_pixel.x += left_offset * position_sign;
 	
 	// arbitrarily large number, see if a number can be calculated instead?
 	int max_iterations = 128;
 	
 	for (int i = 0; i < max_iterations; i++) {
 		
-		if (current_pixel.x < 0.) {
+		if ((left_to_right && current_pixel.x < 0.) 
+				|| (!left_to_right && current_pixel.x > viewport_size.x)) {
 			break;
 		}
 		
@@ -168,7 +171,7 @@ vec2 getNoisePixelCoordLeftToRight(vec2 pix_coord, vec2 viewport_size, mat4 inv_
 		} else {
 			offset -= pixel_separation;
 		}
-		current_pixel.x -= offset;
+		current_pixel.x += offset * position_sign;
 		
 	}
 	
@@ -178,15 +181,47 @@ vec2 getNoisePixelCoordLeftToRight(vec2 pix_coord, vec2 viewport_size, mat4 inv_
 }
 
 
-vec2 getNoisePixelCoord(vec2 uv_coord, vec2 viewport_size, mat4 inv_projection_matrix){
-	if (from_center_to_borders) {
-		return getNoisePixelCoordCenterToBorders(uv_coord, viewport_size, inv_projection_matrix);
-	} else {
-		vec2 pix_coord = uv_coord * viewport_size;
-		return getNoisePixelCoordLeftToRight(pix_coord, viewport_size, inv_projection_matrix);
-	}
+// *********** NOISE AND PATTERN **********
+
+vec3 getGreyNoiseColor(vec2 noise_pix_coord){
+	vec2 noise_res = vec2(textureSize(noise_img, 0));
+	vec2 noise_coord = noise_pix_coord / noise_res;
+	vec3 noise_color = textureLod(noise_img, noise_coord, 0.0).rgb;
+	noise_color = smoothstep(0.2, 0.8, noise_color);
+	return noise_color;
 }
 
+
+vec3 getColoredNoiseColor(vec2 noise_pix_coord){
+	vec3 result_color = getGreyNoiseColor(noise_pix_coord);
+	result_color.g = getGreyNoiseColor(noise_pix_coord + noise_displ_green).g;
+	result_color.b = getGreyNoiseColor(noise_pix_coord + noise_displ_blue).b;
+	return result_color;
+}
+
+
+vec3 getPatternColorFromPosition(vec2 noise_pix_coord){
+	vec3 noise_color;
+	if (use_noise) {
+		if (use_greyscale) {
+			noise_color = getGreyNoiseColor(noise_pix_coord);
+		} else {
+			noise_color = getColoredNoiseColor(noise_pix_coord);
+		}
+	} else {
+		vec2 noise_res = vec2(textureSize(pattern_img, 0));
+		vec2 noise_coord = noise_pix_coord / noise_res;
+		noise_color = textureLod(pattern_img, noise_coord, 0.0).rgb;
+	}
+	
+	if (round_colors) {
+		noise_color = round(noise_color);
+	}
+	return noise_color;
+}
+
+
+// *********** RETICLE **********
 
 vec3 addColorInFrontOfColor(vec3 background_color, vec4 front_color){
 	vec3 result_color = (
@@ -240,50 +275,115 @@ vec3 addReticles(vec3 initial_color, vec2 uv_coord, vec2 viewport_size,
 }
 
 
-vec3 getNoiseColor(vec2 noise_pix_coord){
-	vec2 noise_res = vec2(textureSize(noise_img, 0));
-	vec2 noise_coord = noise_pix_coord / noise_res;
-	vec3 noise_color = textureLod(noise_img, noise_coord, 0.0).rgb;
-	noise_color = smoothstep(0.2, 0.8, noise_color);
-	return noise_color;
+// *********** COLOR **********
+
+vec3 horizontal_blur(vec2 uv_coord, vec2 viewport_size){
+	vec3 color = textureLod(screen_texture, uv_coord, 0.0).rgb;
+	float uv_pix_x = 1. / viewport_size.x;
+	float uv_jump = uv_pix_x;
+	int max_blur_distance = 15;
+	vec2 uv_left = uv_coord;
+	vec2 uv_right = uv_coord;
+	float current_sign = 1.;
+	float count = 1.;
+	for (int i = 0; i < max_blur_distance; i++) {
+		uv_left.x -= uv_jump;
+		uv_right.x += uv_jump;
+		uv_left.y += min(max(0., uv_jump * current_sign), 1.);
+		uv_right.y += min(max(0., uv_jump * current_sign), 1.);
+		if (uv_left.x >= 0.){
+			color += textureLod(screen_texture, uv_left, 0.0).rgb;
+			count++;
+		}
+		if (uv_right.x < 1.){
+			color += textureLod(screen_texture, uv_right, 0.0).rgb;
+			count++;
+		}
+		uv_jump += uv_pix_x;
+		current_sign *= -1.;
+	}
+	return color / count;
 }
 
 
-vec3 getColoredNoiseColor(vec2 noise_pix_coord){
-	vec3 result_color = getNoiseColor(noise_pix_coord);
-	result_color.g = getNoiseColor(noise_pix_coord + noise_displ_green).g;
-	result_color.b = getNoiseColor(noise_pix_coord + noise_displ_blue).b;
-	return result_color;
+vec3 addColor(vec3 noise_color, vec2 uv_coord, vec2 viewport_size, 
+		mat4 inv_projection_matrix){
+	vec2 pix_coord = uv_coord * viewport_size;
+	float pixel_separation = getPixelSeparation(pix_coord, inv_projection_matrix);
+	
+	float screen_midpoint = viewport_size.x * 0.5;
+	bool left_of_center = pix_coord.x < screen_midpoint;
+	
+	// We get the colors corresponding to each eye viewing this pixel (left and right for wall-eyed)
+	float left_x = pix_coord.x;
+	float right_x = pix_coord.x;
+	if (from_center_to_borders) {
+		float side_offset = eye_distance_in_pixels * 0.5;
+		if (left_of_center) {
+			right_x += side_offset;
+			if (left_x < 0.) {
+				left_x = right_x;
+			}
+		} else {
+			left_x -= side_offset;
+			if (right_x >= viewport_size.x){
+				right_x = left_x;
+			}
+		}
+	} else {
+		left_x -= pixel_separation * 0.5;
+		right_x += pixel_separation * 0.5;
+		if (left_x < 0.) {
+			left_x = right_x;
+		} else if (right_x >= viewport_size.x) {
+			right_x = left_x;
+		}
+	}
+	vec2 left_uv = vec2(left_x / viewport_size.x, uv_coord.y);
+	vec2 right_uv = vec2(right_x / viewport_size.x, uv_coord.y);
+	vec3 left_color = horizontal_blur(left_uv, viewport_size);
+	vec3 right_color = horizontal_blur(right_uv, viewport_size);
+	
+	// We combine the colors depending on how light or dark the noise is
+	// Then add back noise in to make sure the noise patterns are visible
+	vec3 color_mix = (left_color * noise_color) + (right_color * (1. - noise_color));
+	float color_mix_balance = 0.3;
+	vec3 final_color = (noise_color * (1. - color_mix_balance)) + (color_mix * color_mix_balance);
+	return final_color;
 }
 
+
+// *********** FRAGMENT **********
 
 void fragment() {
 	
-	vec2 noise_pix_coord = getNoisePixelCoord(SCREEN_UV, VIEWPORT_SIZE, 
-			INV_PROJECTION_MATRIX);
-	
 	vec3 noise_color;
-	if (use_noise) {
-		if (use_greyscale) {
-			noise_color = getNoiseColor(noise_pix_coord);
-		} else {
-			noise_color = getColoredNoiseColor(noise_pix_coord);
-		}
-	} else {
-		vec2 noise_res = vec2(textureSize(pattern_img, 0));
-		vec2 noise_coord = noise_pix_coord / noise_res;
-		noise_color = textureLod(pattern_img, noise_coord, 0.0).rgb;
-	}
 	
-	if (round_colors) {
-		noise_color = round(noise_color);
+	if (from_center_to_borders) {
+		vec2 noise_pix_coord = getNoisePixelCoordCenterToBorders(SCREEN_UV, VIEWPORT_SIZE, 
+			INV_PROJECTION_MATRIX);
+		noise_color = getPatternColorFromPosition(noise_pix_coord);
+	} else {
+		vec2 pix_coord = SCREEN_UV * VIEWPORT_SIZE;
+		// left to right
+		vec2 noise_pix_coord_left = getNoisePixelSideToSide(pix_coord, VIEWPORT_SIZE, INV_PROJECTION_MATRIX, true);
+		vec3 noise_color_left = getPatternColorFromPosition(noise_pix_coord_left);
+		// right to left
+		vec2 noise_pix_coord_right = getNoisePixelSideToSide(pix_coord, VIEWPORT_SIZE, INV_PROJECTION_MATRIX, false);
+		// we offset vertically by half the pattern texture to avoid pattern interference between the two
+		vec2 noise_res = vec2(textureSize(pattern_img, 0));
+		vec3 noise_color_right = getPatternColorFromPosition(noise_pix_coord_right + vec2(0., noise_res.y * 0.5));
+		// we combine both to have a symmetric effect and limit side echoes
+		noise_color = (noise_color_left + noise_color_right) * 0.5;
 	}
 	
 	vec3 color_result = noise_color;
 	
 	if (show_screen) {
-		vec3 screen = textureLod(screen_texture, SCREEN_UV, 0.0).rgb;
-		color_result = ((color_result * 0.9) + (screen * 0.1));
+		//vec3 screen = textureLod(screen_texture, SCREEN_UV, 0.0).rgb;
+		//color_result = ((color_result * 0.9) + (screen * 0.1));
+		color_result = addColor(noise_color, SCREEN_UV, VIEWPORT_SIZE, 
+				INV_PROJECTION_MATRIX);
 	}
 	
 	if (show_reticle){
@@ -292,28 +392,5 @@ void fragment() {
 	}
 	
 	ALBEDO = color_result;
-	
-	// FOR TESTING
-	
-	//float pixel_separation = getPixelSeparation(SCREEN_UV, INV_PROJECTION_MATRIX);
-	//ALBEDO = vec3(getLinearDepth(SCREEN_UV, INV_PROJECTION_MATRIX) / 255.);
-	//
-	//
-	//
-	//float depth = textureLod(depth_texture, SCREEN_UV, 0.0).r;
-	//vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
-	////vec3 ndc = 2.0*vec3(SCREEN_UV,depth) - vec3(1.0);
-	//vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
-	//view.xyz /= view.w;
-	//ALBEDO = vec3(-view.z)/255.;
-	
-//	ALBEDO = vec3(linear_depth / 255.);
-//	ALBEDO = vec3((pixel_separation - 50.) / 512.);
-	
-//	ALBEDO = textureLod(screen_texture, noise_pix_coord / VIEWPORT_SIZE, 0.0).rgb;
-	
-//	ALBEDO = (color_result * 2. + clamp(vec3(linear_depth / 8000.), 0., 1.)) / 3.;
-	
-//	ALBEDO = getNoiseColor(SCREEN_UV * VIEWPORT_SIZE, noise_img_1);
 	
 }
