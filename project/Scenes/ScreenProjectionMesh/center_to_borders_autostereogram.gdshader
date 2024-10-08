@@ -281,7 +281,7 @@ vec3 horizontal_blur(vec2 uv_coord, vec2 viewport_size){
 	vec3 color = textureLod(screen_texture, uv_coord, 0.0).rgb;
 	float uv_pix_x = 1. / viewport_size.x;
 	float uv_jump = uv_pix_x;
-	int max_blur_distance = 15;
+	int max_blur_distance = 10;
 	vec2 uv_left = uv_coord;
 	vec2 uv_right = uv_coord;
 	float current_sign = 1.;
@@ -346,7 +346,8 @@ vec3 addColor(vec3 noise_color, vec2 uv_coord, vec2 viewport_size,
 	
 	// We combine the colors depending on how light or dark the noise is
 	// Then add back noise in to make sure the noise patterns are visible
-	vec3 color_mix = (left_color * noise_color) + (right_color * (1. - noise_color));
+	//vec3 color_mix = (left_color * noise_color) + (right_color * (1. - noise_color));
+	vec3 color_mix = (left_color + right_color) * 0.5;
 	float color_mix_balance = 0.3;
 	vec3 final_color = (noise_color * (1. - color_mix_balance)) + (color_mix * color_mix_balance);
 	return final_color;
