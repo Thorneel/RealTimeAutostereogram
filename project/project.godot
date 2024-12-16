@@ -17,8 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Constants="*res://Autoload/constants.gd"
 Events="*res://Autoload/events.gd"
-Config="*res://config.gd"
+Config="*res://Autoload/config.gd"
 
 [gui]
 

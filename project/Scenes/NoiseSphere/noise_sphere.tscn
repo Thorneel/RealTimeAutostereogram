@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://i8ld303fujac"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_jki3h"]
+flip_faces = true
+
+[sub_resource type="Gradient" id="Gradient_4afbo"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_acce5"]
+noise_type = 4
+fractal_type = 3
+fractal_lacunarity = 5.0
+fractal_gain = 1.2
+fractal_weighted_strength = 0.2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_74clg"]
+width = 1024
+height = 256
+generate_mipmaps = false
+seamless = true
+color_ramp = SubResource("Gradient_4afbo")
+noise = SubResource("FastNoiseLite_acce5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c725r"]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+albedo_texture = SubResource("NoiseTexture2D_74clg")
+uv1_scale = Vector3(4, 8, 1)
+disable_receive_shadows = true
+
+[node name="NoiseSphere" type="MeshInstance3D"]
+layers = 524288
+cast_shadow = 0
+mesh = SubResource("SphereMesh_jki3h")
+surface_material_override/0 = SubResource("StandardMaterial3D_c725r")

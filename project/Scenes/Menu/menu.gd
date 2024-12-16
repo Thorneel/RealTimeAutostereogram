@@ -1,11 +1,6 @@
 extends Control
 
 
-const EYE_DISTANCE_MIN:float = 20.
-const EYE_DISTANCE_MAX:float = 512.
-const DEFAULT_EYE_DISTANCE:float = 160.
-
-
 @onready var tab_container:TabContainer = $TabContainer
 @onready var confirm_quit:ConfirmationDialog = $QuitConfirmationDialog
 
@@ -14,7 +9,7 @@ const DEFAULT_EYE_DISTANCE:float = 160.
 @onready var eye_distance_value_label:Label = $TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer/EyeDistanceValueLabel
 @onready var wall_eyed_toggle_button:CheckButton = $TabContainer/Settings/MarginContainer/SettingContainer/HBoxContainer2/WallEyedButton
 
-var eye_distance:float = DEFAULT_EYE_DISTANCE
+var eye_distance:float = Constants.DEFAULT_EYE_DISTANCE
 
 
 ## INITIALIZATION ##
@@ -27,15 +22,15 @@ func _ready():
 ## Initial values
 
 func _initialize_values():
-	eye_distance_progress_bar.min_value = EYE_DISTANCE_MIN
-	eye_distance_progress_bar.max_value = EYE_DISTANCE_MAX
-	eye_distance_scroll_bar.min_value = EYE_DISTANCE_MIN
-	eye_distance_scroll_bar.max_value = EYE_DISTANCE_MAX
+	eye_distance_progress_bar.min_value = Constants.EYE_DISTANCE_MIN
+	eye_distance_progress_bar.max_value = Constants.EYE_DISTANCE_MAX
+	eye_distance_scroll_bar.min_value = Constants.EYE_DISTANCE_MIN
+	eye_distance_scroll_bar.max_value = Constants.EYE_DISTANCE_MAX
 	
 	var new_eye_distance = Config.get_eye_distance(eye_distance)
 	if (new_eye_distance is float 
-			and new_eye_distance > EYE_DISTANCE_MIN 
-			and new_eye_distance < EYE_DISTANCE_MAX):
+			and new_eye_distance > Constants.EYE_DISTANCE_MIN 
+			and new_eye_distance < Constants.EYE_DISTANCE_MAX):
 		eye_distance = new_eye_distance
 		_update_eye_distance_menu_displays()
 	wall_eyed_toggle_button.button_pressed = Config.get_wall_eyed(true)
@@ -66,7 +61,7 @@ func toggle():
 
 
 func _change_eye_distance(new_eye_distance:float):
-	if (new_eye_distance <= EYE_DISTANCE_MAX and new_eye_distance >= EYE_DISTANCE_MIN):
+	if (new_eye_distance <= Constants.EYE_DISTANCE_MAX and new_eye_distance >= Constants.EYE_DISTANCE_MIN):
 		eye_distance = new_eye_distance
 		Events.emit_signal("set_eye_distance", eye_distance)
 		_update_eye_distance_menu_displays()
@@ -98,22 +93,22 @@ func _on_quit_confirmation_dialog_confirmed():
 ## Eye distance signals
 
 func _on_minus_10_button_pressed():
-	var new_eye_distance = max(eye_distance - 10., EYE_DISTANCE_MIN)
+	var new_eye_distance = max(eye_distance - 10., Constants.EYE_DISTANCE_MIN)
 	_change_eye_distance(new_eye_distance)
 
 
 func _on_minus_1_button_pressed():
-	var new_eye_distance = max(eye_distance - 1., EYE_DISTANCE_MIN)
+	var new_eye_distance = max(eye_distance - 1., Constants.EYE_DISTANCE_MIN)
 	_change_eye_distance(new_eye_distance)
 
 
 func _on_plus_1_button_pressed():
-	var new_eye_distance = min(eye_distance + 1., EYE_DISTANCE_MAX)
+	var new_eye_distance = min(eye_distance + 1., Constants.EYE_DISTANCE_MAX)
 	_change_eye_distance(new_eye_distance)
 
 
 func _on_plus_10_button_pressed():
-	var new_eye_distance = min(eye_distance + 10., EYE_DISTANCE_MAX)
+	var new_eye_distance = min(eye_distance + 10., Constants.EYE_DISTANCE_MAX)
 	_change_eye_distance(new_eye_distance)
 
 
