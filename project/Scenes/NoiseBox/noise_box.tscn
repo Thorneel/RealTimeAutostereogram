@@ -9,7 +9,7 @@ shading_mode = 0
 disable_ambient_light = true
 disable_fog = true
 albedo_texture = ExtResource("1_oyxu2")
-uv1_scale = Vector3(2.5, 8, 1)
+uv1_scale = Vector3(1.5, 4, 1)
 disable_receive_shadows = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_ufnwi"]
@@ -20,7 +20,7 @@ shading_mode = 0
 disable_ambient_light = true
 disable_fog = true
 albedo_texture = ExtResource("1_oyxu2")
-uv1_scale = Vector3(3, 8, 1)
+uv1_scale = Vector3(1.5, 4, 1)
 uv1_offset = Vector3(0.5, 0, 0)
 disable_receive_shadows = true
 
@@ -32,7 +32,7 @@ shading_mode = 0
 disable_ambient_light = true
 disable_fog = true
 albedo_texture = ExtResource("2_krpda")
-uv1_scale = Vector3(6, 6, 1)
+uv1_scale = Vector3(1.5, 1.5, 1)
 disable_receive_shadows = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_rtvsc"]

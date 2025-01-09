@@ -5,8 +5,8 @@
 [sub_resource type="Gradient" id="Gradient_4afbo"]
 
 [resource]
-width = 256
-height = 256
+width = 1024
+height = 1024
 generate_mipmaps = false
 seamless = true
 color_ramp = SubResource("Gradient_4afbo")
