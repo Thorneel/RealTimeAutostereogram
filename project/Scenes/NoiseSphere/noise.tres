@@ -1,0 +1,13 @@
+[gd_resource type="NoiseTexture2D" load_steps=3 format=3 uid="uid://cgjs0qvuj7w07"]
+
+[ext_resource type="FastNoiseLite" uid="uid://7e0tatdq82y3" path="res://Scenes/ScreenProjectionMesh/noise.tres" id="1_dtsfb"]
+
+[sub_resource type="Gradient" id="Gradient_4afbo"]
+
+[resource]
+width = 1024
+height = 256
+generate_mipmaps = false
+seamless = true
+color_ramp = SubResource("Gradient_4afbo")
+noise = ExtResource("1_dtsfb")

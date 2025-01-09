@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bmjtlxk5ehrr4"]
+[gd_scene load_steps=15 format=3 uid="uid://bmjtlxk5ehrr4"]
 
 [ext_resource type="Shader" path="res://Scenes/ScreenProjectionMesh/center_to_borders_autostereogram.gdshader" id="1_wcv8o"]
 [ext_resource type="Texture2D" uid="uid://wjiwp2s824h6" path="res://Scenes/ScreenProjectionMesh/random_lines2.png" id="2_odxvr"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/noise_viewport.gd" id="5_fsml1"]
 [ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/noise_sphere_viewport.gd" id="6_ikdjp"]
 [ext_resource type="PackedScene" uid="uid://i8ld303fujac" path="res://Scenes/NoiseSphere/noise_sphere.tscn" id="6_pu88f"]
+[ext_resource type="PackedScene" uid="uid://baq1khr4tnfv" path="res://Scenes/NoiseBox/noise_box.tscn" id="8_hgi2g"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rahm0"]
 viewport_path = NodePath("NoiseSphereViewport1")
@@ -55,6 +56,7 @@ noise = SubResource("FastNoiseLite_qn3k0")
 
 [node name="ScreenProjectionMesh" type="MeshInstance3D"]
 process_mode = 3
+visible = false
 material_override = SubResource("ShaderMaterial_tghil")
 cast_shadow = 0
 extra_cull_margin = 16384.0
@@ -92,12 +94,16 @@ script = ExtResource("6_ikdjp")
 
 [node name="NoiseSphere1" parent="NoiseSphereViewport1" instance=ExtResource("6_pu88f")]
 unique_name_in_owner = true
+visible = false
 
-[node name="CameraFront" type="Camera3D" parent="NoiseSphereViewport1/NoiseSphere1"]
+[node name="NoiseBox1" parent="NoiseSphereViewport1" instance=ExtResource("8_hgi2g")]
+unique_name_in_owner = true
+
+[node name="CameraFront" type="Camera3D" parent="NoiseSphereViewport1/NoiseBox1"]
 cull_mask = 524288
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="NoiseSphereViewport1/NoiseSphere1/CameraFront"]
-remote_path = NodePath("../../../../NoiseSphereViewport2/NoiseSphere2/NodeForHoldingCamera")
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="NoiseSphereViewport1/NoiseBox1/CameraFront"]
+remote_path = NodePath("../../../../NoiseSphereViewport2/NoiseBox2/NodeForHoldingCamera")
 update_position = false
 update_scale = false
 
@@ -106,9 +112,14 @@ script = ExtResource("6_ikdjp")
 
 [node name="NoiseSphere2" parent="NoiseSphereViewport2" instance=ExtResource("6_pu88f")]
 unique_name_in_owner = true
+visible = false
 
-[node name="NodeForHoldingCamera" type="Node3D" parent="NoiseSphereViewport2/NoiseSphere2"]
+[node name="NoiseBox2" parent="NoiseSphereViewport2" instance=ExtResource("8_hgi2g")]
+unique_name_in_owner = true
 
-[node name="CameraBack" type="Camera3D" parent="NoiseSphereViewport2/NoiseSphere2/NodeForHoldingCamera"]
+[node name="NodeForHoldingCamera" type="Node3D" parent="NoiseSphereViewport2/NoiseBox2"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="CameraBack" type="Camera3D" parent="NoiseSphereViewport2/NoiseBox2/NodeForHoldingCamera"]
 transform = Transform3D(1, -8.74228e-08, 8.74228e-08, 8.74228e-08, 1, 8.74228e-08, -8.74228e-08, -8.74228e-08, 1, 0, 0, 0)
 cull_mask = 524288

@@ -349,7 +349,7 @@ vec3 addColor(vec3 noise_color, vec2 uv_coord, vec2 viewport_size,
 	// Then add back noise in to make sure the noise patterns are visible
 	//vec3 color_mix = (left_color * noise_color) + (right_color * (1. - noise_color));
 	vec3 color_mix = (left_color + right_color) * 0.5;
-	float color_mix_balance = 0.3;
+	float color_mix_balance = 0.5;
 	vec3 final_color = (noise_color * (1. - color_mix_balance)) + (color_mix * color_mix_balance);
 	return final_color;
 }

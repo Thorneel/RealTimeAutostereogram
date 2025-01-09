@@ -7,14 +7,14 @@ const DEFAULT_WALL_EYED = true
 
 @onready var noise_texture_rect_1:TextureRect = $NoiseViewport1/NoiseTextureRect
 @onready var noise_texture_rect_2:TextureRect = $NoiseViewport2/NoiseTextureRect
-@onready var noise_sphere_mesh:MeshInstance3D = %NoiseSphere1
+#@onready var noise_sphere_mesh:MeshInstance3D = %NoiseBox1
 @onready var noise_1:Noise = noise_texture_rect_1.texture.get_noise()
 @onready var noise_2:Noise = noise_texture_rect_2.texture.get_noise()
-#@onready var sphere_noise:Noise = get_tree().get("res://Scenes/NoiseSphere/noise_sphere.tscn::FastNoiseLite_acce5")
-@onready var noise_sphere_material:StandardMaterial3D = noise_sphere_mesh.get_surface_override_material(0)
-@onready var noise_sphere_texture:Texture2D = noise_sphere_material.albedo_texture
-@onready var sphere_noise:Noise = noise_sphere_texture.get_noise()
-@onready var noise_camera_front:Camera3D = %NoiseSphere1/CameraFront
+@onready var box_noise:Noise = %NoiseBox1.get_noise()
+#@onready var noise_sphere_material:StandardMaterial3D = noise_sphere_mesh.get_surface_override_material(0)
+#@onready var noise_sphere_texture:Texture2D = noise_sphere_material.albedo_texture
+#@onready var sphere_noise:Noise = noise_sphere_texture.get_noise()
+@onready var noise_camera_front:Camera3D = %NoiseBox1/CameraFront
 
 
 var mat:Material = get_material_override()
@@ -47,7 +47,7 @@ func _process(_delta):
 func _change_noise():
 	noise_1.seed = random.randi()
 	noise_2.seed = random.randi()
-	sphere_noise.seed = random.randi()
+	box_noise.seed = random.randi()
 
 
 ## PUBLIC ##
