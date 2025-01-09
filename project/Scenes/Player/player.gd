@@ -22,6 +22,8 @@ var ball_scene = preload("res://Scenes/Ball/ball.tscn")
 
 @onready var launch_point:Node3D = $Camera3D/launch_point
 
+@onready var remote_transfor_for_noise_camera:RemoteTransform3D = $Camera3D/RemoteTransformForNoiseCamera
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -34,6 +36,7 @@ var throw_force = MIN_THROW_FORCE
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	is_mouse_captured = true
+	proj_mesh.give_remote_transform_for_noise_cameras(remote_transfor_for_noise_camera)
 	ball.toggle_physics()
 
 

@@ -1,18 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://bmjtlxk5ehrr4"]
+[gd_scene load_steps=15 format=3 uid="uid://bmjtlxk5ehrr4"]
 
 [ext_resource type="Shader" path="res://Scenes/ScreenProjectionMesh/center_to_borders_autostereogram.gdshader" id="1_wcv8o"]
 [ext_resource type="Texture2D" uid="uid://wjiwp2s824h6" path="res://Scenes/ScreenProjectionMesh/random_lines2.png" id="2_odxvr"]
-[ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_hnrec"]
 [ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/screen_projection_mesh.gd" id="3_m755t"]
+[ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_orka5"]
+[ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/noise_viewport.gd" id="5_fsml1"]
+[ext_resource type="Script" path="res://Scenes/ScreenProjectionMesh/noise_sphere_viewport.gd" id="6_ikdjp"]
+[ext_resource type="PackedScene" uid="uid://i8ld303fujac" path="res://Scenes/NoiseSphere/noise_sphere.tscn" id="6_pu88f"]
+[ext_resource type="PackedScene" uid="uid://baq1khr4tnfv" path="res://Scenes/NoiseBox/noise_box.tscn" id="8_hgi2g"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_pfq3r"]
-noise_type = 5
-frequency = 0.5
+[sub_resource type="ViewportTexture" id="ViewportTexture_rahm0"]
+viewport_path = NodePath("NoiseSphereViewport1")
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sy8s8"]
-noise = SubResource("FastNoiseLite_pfq3r")
+[sub_resource type="ViewportTexture" id="ViewportTexture_h7nnm"]
+viewport_path = NodePath("NoiseSphereViewport2")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tghil"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_wcv8o")
 shader_parameter/eye_distance_in_pixels = 160.0
@@ -23,29 +27,99 @@ shader_parameter/min_culling = 0.0
 shader_parameter/max_culling = -1.0
 shader_parameter/depth_scale = 1.0
 shader_parameter/wall_eyed = true
-shader_parameter/from_center_to_borders = true
+shader_parameter/from_center_to_borders = false
 shader_parameter/use_greyscale = true
 shader_parameter/noise_displ_green = Vector2(73, 377)
 shader_parameter/noise_displ_blue = Vector2(183, 271)
 shader_parameter/use_noise = true
 shader_parameter/round_colors = false
-shader_parameter/show_screen = false
+shader_parameter/show_screen = true
 shader_parameter/show_reticle = true
 shader_parameter/reticle_opacity = 0.2
-shader_parameter/noise_img = SubResource("NoiseTexture2D_sy8s8")
+shader_parameter/noise_img_1 = SubResource("ViewportTexture_rahm0")
+shader_parameter/noise_img_2 = SubResource("ViewportTexture_h7nnm")
 shader_parameter/pattern_img = ExtResource("2_odxvr")
-shader_parameter/reticle_img = ExtResource("3_hnrec")
+shader_parameter/reticle_img = ExtResource("3_orka5")
 
 [sub_resource type="QuadMesh" id="QuadMesh_6372g"]
-material = SubResource("ShaderMaterial_tghil")
 flip_faces = true
 size = Vector2(2, 2)
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qn3k0"]
+seed = 1
+frequency = 0.5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rvsc6"]
+resource_local_to_scene = true
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_qn3k0")
+
 [node name="ScreenProjectionMesh" type="MeshInstance3D"]
 process_mode = 3
+visible = false
+material_override = SubResource("ShaderMaterial_tghil")
 cast_shadow = 0
 extra_cull_margin = 16384.0
 ignore_occlusion_culling = true
 gi_mode = 0
 mesh = SubResource("QuadMesh_6372g")
 script = ExtResource("3_m755t")
+
+[node name="NoiseViewport1" type="SubViewport" parent="."]
+disable_3d = true
+script = ExtResource("5_fsml1")
+
+[node name="NoiseTextureRect" type="TextureRect" parent="NoiseViewport1"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_rvsc6")
+
+[node name="NoiseViewport2" type="SubViewport" parent="."]
+disable_3d = true
+script = ExtResource("5_fsml1")
+
+[node name="NoiseTextureRect" type="TextureRect" parent="NoiseViewport2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_rvsc6")
+
+[node name="NoiseSphereViewport1" type="SubViewport" parent="."]
+script = ExtResource("6_ikdjp")
+
+[node name="NoiseSphere1" parent="NoiseSphereViewport1" instance=ExtResource("6_pu88f")]
+unique_name_in_owner = true
+visible = false
+
+[node name="NoiseBox1" parent="NoiseSphereViewport1" instance=ExtResource("8_hgi2g")]
+unique_name_in_owner = true
+
+[node name="CameraFront" type="Camera3D" parent="NoiseSphereViewport1/NoiseBox1"]
+cull_mask = 524288
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="NoiseSphereViewport1/NoiseBox1/CameraFront"]
+remote_path = NodePath("../../../../NoiseSphereViewport2/NoiseBox2/NodeForHoldingCamera")
+update_position = false
+update_scale = false
+
+[node name="NoiseSphereViewport2" type="SubViewport" parent="."]
+script = ExtResource("6_ikdjp")
+
+[node name="NoiseSphere2" parent="NoiseSphereViewport2" instance=ExtResource("6_pu88f")]
+unique_name_in_owner = true
+visible = false
+
+[node name="NoiseBox2" parent="NoiseSphereViewport2" instance=ExtResource("8_hgi2g")]
+unique_name_in_owner = true
+
+[node name="NodeForHoldingCamera" type="Node3D" parent="NoiseSphereViewport2/NoiseBox2"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="CameraBack" type="Camera3D" parent="NoiseSphereViewport2/NoiseBox2/NodeForHoldingCamera"]
+transform = Transform3D(1, -8.74228e-08, 8.74228e-08, 8.74228e-08, 1, 8.74228e-08, -8.74228e-08, -8.74228e-08, 1, 0, 0, 0)
+cull_mask = 524288

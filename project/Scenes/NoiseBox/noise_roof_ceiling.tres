@@ -1,0 +1,13 @@
+[gd_resource type="NoiseTexture2D" load_steps=3 format=3 uid="uid://3pyba6635w64"]
+
+[ext_resource type="FastNoiseLite" uid="uid://2wbd5v6502b1" path="res://Scenes/NoiseBox/fast_noise.tres" id="1_lcg6e"]
+
+[sub_resource type="Gradient" id="Gradient_4afbo"]
+
+[resource]
+width = 1024
+height = 1024
+generate_mipmaps = false
+seamless = true
+color_ramp = SubResource("Gradient_4afbo")
+noise = ExtResource("1_lcg6e")

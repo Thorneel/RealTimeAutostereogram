@@ -1,13 +1,47 @@
-[gd_scene load_steps=15 format=3 uid="uid://dmp03r3e0fha3"]
+[gd_scene load_steps=20 format=3 uid="uid://dmp03r3e0fha3"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_4jd05"]
 [ext_resource type="PackedScene" uid="uid://bmjtlxk5ehrr4" path="res://Scenes/ScreenProjectionMesh/screen_projection_mesh.tscn" id="2_3uow2"]
 [ext_resource type="Texture2D" uid="uid://b8gpa7i0tatbj" path="res://Scenes/ScreenProjectionMesh/reticle_dot_small.png" id="3_s5j4t"]
+[ext_resource type="Shader" path="res://Scenes/ScreenProjectionMesh/center_to_borders_autostereogram.gdshader" id="3_wmpnk"]
+[ext_resource type="Texture2D" uid="uid://wjiwp2s824h6" path="res://Scenes/ScreenProjectionMesh/random_lines2.png" id="4_sw31u"]
 [ext_resource type="PackedScene" uid="uid://dwrc3pcai0kgo" path="res://Scenes/Ball/ball.tscn" id="4_tvaa7"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2lxlu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0asg4"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_loiew"]
+viewport_path = NodePath("NoiseSphereViewport1")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_vfv25"]
+viewport_path = NodePath("NoiseSphereViewport2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3nsya"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_wmpnk")
+shader_parameter/eye_distance_in_pixels = 160.0
+shader_parameter/min_distance_in_pixels = 250.0
+shader_parameter/pixel_per_meter = 4331.0
+shader_parameter/eye_screen_distance_in_pixels = 3000.0
+shader_parameter/min_culling = 0.0
+shader_parameter/max_culling = -1.0
+shader_parameter/depth_scale = 1.0
+shader_parameter/wall_eyed = true
+shader_parameter/from_center_to_borders = false
+shader_parameter/use_greyscale = true
+shader_parameter/noise_displ_green = Vector2(73, 377)
+shader_parameter/noise_displ_blue = Vector2(183, 271)
+shader_parameter/use_noise = true
+shader_parameter/round_colors = false
+shader_parameter/show_screen = true
+shader_parameter/show_reticle = true
+shader_parameter/reticle_opacity = 0.2
+shader_parameter/noise_img_1 = SubResource("ViewportTexture_loiew")
+shader_parameter/noise_img_2 = SubResource("ViewportTexture_vfv25")
+shader_parameter/pattern_img = ExtResource("4_sw31u")
+shader_parameter/reticle_img = ExtResource("3_s5j4t")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_js6rt"]
 albedo_color = Color(1, 0, 0, 1)
@@ -130,8 +164,17 @@ shape = SubResource("CapsuleShape3D_0asg4")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+cull_mask = 524287
 
 [node name="ScreenProjectionMesh" parent="Camera3D" instance=ExtResource("2_3uow2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = SubResource("ShaderMaterial_3nsya")
+skeleton = NodePath("../..")
+
+[node name="RemoteTransformForNoiseCamera" type="RemoteTransform3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+update_position = false
+update_scale = false
 
 [node name="ReticleSprite" type="Sprite3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)

@@ -1,0 +1,72 @@
+[gd_scene load_steps=10 format=3 uid="uid://baq1khr4tnfv"]
+
+[ext_resource type="Script" path="res://Scenes/NoiseBox/noise_box.gd" id="1_mogri"]
+[ext_resource type="Texture2D" uid="uid://8jdsgevujhf6" path="res://Scenes/NoiseBox/noise_side.tres" id="1_oyxu2"]
+[ext_resource type="Texture2D" uid="uid://3pyba6635w64" path="res://Scenes/NoiseBox/noise_roof_ceiling.tres" id="2_krpda"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g8r4t"]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+albedo_texture = ExtResource("1_oyxu2")
+uv1_scale = Vector3(1.5, 4, 1)
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_ufnwi"]
+material = SubResource("StandardMaterial3D_g8r4t")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_efykg"]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+albedo_texture = ExtResource("1_oyxu2")
+uv1_scale = Vector3(1.5, 4, 1)
+uv1_offset = Vector3(0.5, 0, 0)
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_uc4m0"]
+material = SubResource("StandardMaterial3D_efykg")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vtj8r"]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+albedo_texture = ExtResource("2_krpda")
+uv1_scale = Vector3(1.5, 1.5, 1)
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_rtvsc"]
+material = SubResource("StandardMaterial3D_vtj8r")
+
+[node name="NoiseBox" type="Node3D"]
+script = ExtResource("1_mogri")
+
+[node name="Back" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+layers = 524288
+mesh = SubResource("QuadMesh_ufnwi")
+
+[node name="Front" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.5)
+layers = 524288
+mesh = SubResource("QuadMesh_ufnwi")
+
+[node name="Right" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0, 0)
+layers = 524288
+mesh = SubResource("QuadMesh_uc4m0")
+
+[node name="Left" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.5, 0, 0)
+layers = 524288
+mesh = SubResource("QuadMesh_uc4m0")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, 0)
+layers = 524288
+mesh = SubResource("QuadMesh_rtvsc")
+
+[node name="Ceiling" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.5, 0)
+layers = 524288
+mesh = SubResource("QuadMesh_rtvsc")
